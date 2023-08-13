@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BlogAppLib.Models
+{
+    public class Tag
+    {
+        public Guid Id { get; set; }
+        public string TagName { get; set; }
+
+        // Связь с статьями
+        public List<Article> Articles { get; set; } = new List<Article>();
+    }
+}
