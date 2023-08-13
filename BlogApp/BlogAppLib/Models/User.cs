@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogAppLib.Models
+namespace BlogApp.DLL.Models
 {
     public class User
     {
