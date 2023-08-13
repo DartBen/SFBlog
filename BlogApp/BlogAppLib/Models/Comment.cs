@@ -19,6 +19,5 @@ namespace BlogAppLib.Models
         // Статья
         public Guid Article_Id { get; set; }
         public Article Article { get; set; }
-
     }
 }
