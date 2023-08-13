@@ -15,5 +15,10 @@ namespace BlogAppLib.Models
         public string Login { get; set; }
         public string Email { get; set; }
 
+        // Статьи потльзователя
+        public List<Article> Articles { get; set; } = new List<Article>();
+
+        // комментарии пользователя
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
