@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogApp.DLL.Repository
+namespace BlogApp.DLL.Repository.Interfaces
 {
     public interface IUserRepository
     {
