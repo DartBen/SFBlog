@@ -11,6 +11,7 @@ public class Program
 
         builder.Services.AddDbContext<BlogBD>();
 
+
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 

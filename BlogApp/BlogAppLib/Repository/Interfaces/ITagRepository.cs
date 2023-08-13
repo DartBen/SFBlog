@@ -9,7 +9,7 @@ namespace BlogApp.DLL.Repository.Interfaces
 {
     public interface ITagRepository
     {
-        IEnumerable<Tag> GetAll();
+        Task<IEnumerable<Tag>> GetAll();
         Task<Tag> Get(Guid id);
         Task Create(Tag item);
         Task Update(Tag item);

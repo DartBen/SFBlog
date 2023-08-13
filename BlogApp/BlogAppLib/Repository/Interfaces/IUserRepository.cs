@@ -9,7 +9,7 @@ namespace BlogApp.DLL.Repository.Interfaces
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetAll();
+        Task<IEnumerable<User>> GetAll();
         Task<User> Get(Guid id);
         Task Create(User item);
         Task Update(User item);

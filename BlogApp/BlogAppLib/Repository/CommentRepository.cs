@@ -1,5 +1,7 @@
-﻿using BlogApp.DLL.Models;
+﻿using BlogApp.DLL.Context;
+using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,39 @@ namespace BlogApp.DLL.Repository
 {
     public class CommentRepository : ICommentRepository
     {
-        public Task Create(Comment item)
+        private readonly BlogBD _db;
+
+        public CommentRepository(BlogBD db)
         {
-            throw new NotImplementedException();
+            _db = db;
         }
 
-        public Task Delete(Comment item)
+        public async Task Create(Comment item)
         {
-            throw new NotImplementedException();
+            _db.Comments.Add(item);
+            await _db.SaveChangesAsync();
         }
 
-        public Task<Comment> Get(Guid id)
+        public async Task Delete(Comment item)
         {
-            throw new NotImplementedException();
+            _db.Comments.Remove(item);
+            await _db.SaveChangesAsync();
         }
 
-        public IEnumerable<Comment> GetAll()
+        public async Task<Comment> Get(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.Comments.FindAsync(id);
         }
 
-        public Task Update(Comment item)
+        public async Task<IEnumerable<Comment>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _db.Comments.ToListAsync();
+        }
+
+        public async Task Update(Comment item)
+        {
+            _db.Comments.Update(item);
+            await _db.SaveChangesAsync();
         }
     }
 }

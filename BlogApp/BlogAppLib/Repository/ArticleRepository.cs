@@ -1,5 +1,7 @@
-﻿using BlogApp.DLL.Models;
+﻿using BlogApp.DLL.Context;
+using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,39 @@ namespace BlogApp.DLL.Repository
 {
     public class ArticleRepository : IArticleRepository
     {
-        public Task Create(Article item)
+        private readonly BlogBD _db;
+
+        public ArticleRepository(BlogBD db)
         {
-            throw new NotImplementedException();
+            _db = db;
         }
 
-        public Task Delete(Article item)
+        public async Task Create(Article item)
         {
-            throw new NotImplementedException();
+            _db.Articles.Add(item);
+            await _db.SaveChangesAsync();
         }
 
-        public Task<Article> Get(Guid id)
+        public async Task Delete(Article item)
         {
-            throw new NotImplementedException();
+            _db.Articles.Remove(item);
+            await _db.SaveChangesAsync();
         }
 
-        public IEnumerable<Article> GetAll()
+        public async Task<Article> Get(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.Articles.FindAsync(id);
         }
 
-        public Task Update(Article item)
+        public async Task<IEnumerable<Article>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _db.Articles.ToListAsync();
+        }
+
+        public async Task Update(Article item)
+        {
+            _db.Articles.Update(item);
+            await _db.SaveChangesAsync();
         }
     }
 }

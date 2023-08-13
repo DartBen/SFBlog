@@ -9,7 +9,7 @@ namespace BlogApp.DLL.Repository.Interfaces
 {
     public interface IArticleRepository
     {
-        IEnumerable<Article> GetAll();
+        Task<IEnumerable<Article>> GetAll();
         Task<Article> Get(Guid id);
         Task Create(Article item);
         Task Update(Article item);

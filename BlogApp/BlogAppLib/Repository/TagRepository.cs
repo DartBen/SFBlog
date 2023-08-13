@@ -1,5 +1,7 @@
-﻿using BlogApp.DLL.Models;
+﻿using BlogApp.DLL.Context;
+using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,39 @@ namespace BlogApp.DLL.Repository
 {
     public class TagRepository : ITagRepository
     {
-        public Task Create(Tag item)
+        private readonly BlogBD _db;
+
+        public TagRepository(BlogBD db)
         {
-            throw new NotImplementedException();
+            _db = db;
         }
 
-        public Task Delete(Tag item)
+        public async Task Create(Tag item)
         {
-            throw new NotImplementedException();
+            _db.Tags.Add(item);
+            await _db.SaveChangesAsync();
         }
 
-        public Task<Tag> Get(Guid id)
+        public async Task Delete(Tag item)
         {
-            throw new NotImplementedException();
+            _db.Tags.Remove(item);
+            await _db.SaveChangesAsync();
         }
 
-        public IEnumerable<Tag> GetAll()
+        public async Task<Tag> Get(Guid id)
         {
-            throw new NotImplementedException();
+            return await _db.Tags.FindAsync(id);
         }
 
-        public Task Update(Tag item)
+        public async Task<IEnumerable<Tag>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _db.Tags.ToListAsync();
+        }
+
+        public async Task Update(Tag item)
+        {
+            _db.Tags.Update(item);
+            await _db.SaveChangesAsync();
         }
     }
 }

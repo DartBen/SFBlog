@@ -9,7 +9,7 @@ namespace BlogApp.DLL.Repository.Interfaces
 {
     public interface ICommentRepository
     {
-        IEnumerable<Comment> GetAll();
+        Task<IEnumerable<Comment>> GetAll();
         Task<Comment> Get(Guid id);
         Task Create(Comment item);
         Task Update(Comment item);
