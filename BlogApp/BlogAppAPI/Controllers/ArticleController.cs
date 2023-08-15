@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using BlogApp.DLL.Repository.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,6 +10,15 @@ namespace BlogAppAPI.Controllers
     [ApiController]
     public class ArticleController : ControllerBase
     {
+        private IArticleRepository articles;
+        private IMapper mapper;
+
+        public ArticleController(IArticleRepository articleRepository, IMapper mapper)
+        {
+            articles = articleRepository;
+            this.mapper = mapper;
+        }
+
         // GET: api/<ArticleController>
         [HttpGet]
         public IEnumerable<string> Get()

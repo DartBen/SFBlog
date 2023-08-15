@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using BlogApp.DLL.Repository.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,10 +10,13 @@ namespace BlogAppAPI.Controllers
     [ApiController]
     public class TagController : ControllerBase
     {
+        private ITagRepository tags;
+        private IMapper mapper;
 
-        public TagController()
+        public TagController(ITagRepository tagRepository, IMapper mapper)
         {
-
+            tags = tagRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]

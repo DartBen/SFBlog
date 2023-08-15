@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using BlogApp.DLL.Repository.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,6 +10,15 @@ namespace BlogAppAPI.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
+        private ICommentRepository comments;
+        private IMapper mapper;
+
+        public CommentController(ICommentRepository commentRepository, IMapper mapper)
+        {
+            comments = commentRepository;
+            this.mapper = mapper;
+        }
+
         // GET: api/<CommentController>
         [HttpGet]
         public IEnumerable<string> Get()

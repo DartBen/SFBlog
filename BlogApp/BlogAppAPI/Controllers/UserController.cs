@@ -12,51 +12,44 @@ namespace BlogAppAPI.Controllers
     public class UserController : ControllerBase
     {
         private IUserRepository users;
-        private IArticleRepository articles;
-        private ITagRepository tags;
-        private ICommentRepository comments;
         private IMapper mapper;
 
-        public UserController(IUserRepository userRepository, ICommentRepository commentRepository,
-            ITagRepository tagRepository, IArticleRepository articleRepository, IMapper mapper)
+        public UserController(IUserRepository userRepository, IMapper mapper)
         {
             users = userRepository;
-            comments = commentRepository;
-            tags = tagRepository;
-            articles = articleRepository;
             this.mapper = mapper;
         }
 
-        // GET: api/<UserController>
         [HttpGet]
+        [Route("GetAll")]
         public async Task<IEnumerable<User>> GetAll()
         {
             return await users.GetAll();
         }
 
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public async Task<User> Get(Guid id)
+        [HttpGet]
+        [Route("{GetById}")]
+        public async Task<User> GetById(Guid id)
         {
             return await users.Get(id);
         }
 
-        // POST api/<UserController>
         [HttpPost]
-        public async Task PostAsync([FromBody] User user)
+        [Route("Create")]
+        public async Task Create([FromBody] User user)
         {
             await users.Create(user);
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public async Task PutAsync(Guid id, [FromBody] User user)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task Update(Guid id, [FromBody] User user)
         {
             await users.Update(user);
         }
 
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("{id}")]
         public async Task Delete(Guid id)
         {
             var user = await users.Get(id);
