@@ -12,16 +12,18 @@ namespace BlogApp.DLL.Repository
 {
     public class CommentRepository : ICommentRepository
     {
-        private readonly BlogBD _db;
+        private readonly BlogDB _db;
 
-        public CommentRepository(BlogBD db)
+        public CommentRepository(BlogDB db)
         {
             _db = db;
         }
 
         public async Task Create(Comment item)
         {
-            _db.Comments.Add(item);
+            var entry = _db.Entry(item);
+            if (entry.State == EntityState.Detached)
+                _db.Comments.Add(item);
             await _db.SaveChangesAsync();
         }
 

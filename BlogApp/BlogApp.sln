@@ -5,12 +5,13 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.DLL", "BlogAppLib\BlogApp.DLL.csproj", "{75BAB964-408A-4E9A-A75B-3EE6A162F83B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp", "BlogApp\BlogApp.csproj", "{F16D6F6A-210F-4526-85DB-568CDFEB24E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.BLL", "BlogApp.BLL\BlogApp.BLL.csproj", "{B8F0D207-EEB5-42FD-907B-8DDEEB78B066}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogAppAPI", "BlogAppAPI\BlogAppAPI.csproj", "{AD59CAB2-D870-4127-8589-2B78F92C742A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{75BAB964-408A-4E9A-A75B-3EE6A162F83B} = {75BAB964-408A-4E9A-A75B-3EE6A162F83B}
+		{B8F0D207-EEB5-42FD-907B-8DDEEB78B066} = {B8F0D207-EEB5-42FD-907B-8DDEEB78B066}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogApp.BLL", "BlogApp.BLL\BlogApp.BLL.csproj", "{B8F0D207-EEB5-42FD-907B-8DDEEB78B066}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,14 +23,14 @@ Global
 		{75BAB964-408A-4E9A-A75B-3EE6A162F83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75BAB964-408A-4E9A-A75B-3EE6A162F83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75BAB964-408A-4E9A-A75B-3EE6A162F83B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F16D6F6A-210F-4526-85DB-568CDFEB24E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F16D6F6A-210F-4526-85DB-568CDFEB24E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F16D6F6A-210F-4526-85DB-568CDFEB24E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F16D6F6A-210F-4526-85DB-568CDFEB24E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8F0D207-EEB5-42FD-907B-8DDEEB78B066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8F0D207-EEB5-42FD-907B-8DDEEB78B066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8F0D207-EEB5-42FD-907B-8DDEEB78B066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8F0D207-EEB5-42FD-907B-8DDEEB78B066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD59CAB2-D870-4127-8589-2B78F92C742A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD59CAB2-D870-4127-8589-2B78F92C742A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD59CAB2-D870-4127-8589-2B78F92C742A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD59CAB2-D870-4127-8589-2B78F92C742A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

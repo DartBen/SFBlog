@@ -12,16 +12,18 @@ namespace BlogApp.DLL.Repository
 {
     public class TagRepository : ITagRepository
     {
-        private readonly BlogBD _db;
+        private readonly BlogDB _db;
 
-        public TagRepository(BlogBD db)
+        public TagRepository(BlogDB db)
         {
             _db = db;
         }
 
         public async Task Create(Tag item)
         {
-            _db.Tags.Add(item);
+            var entry = _db.Entry(item);
+            if (entry.State == EntityState.Detached)
+                _db.Tags.Add(item);
             await _db.SaveChangesAsync();
         }
 

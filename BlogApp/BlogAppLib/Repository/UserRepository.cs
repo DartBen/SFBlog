@@ -12,16 +12,18 @@ namespace BlogApp.DLL.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly BlogBD _db;
+        private readonly BlogDB _db;
 
-        public UserRepository(BlogBD db)
+        public UserRepository(BlogDB db)
         {
             _db = db;
         }
 
         public async Task Create(User item)
         {
-            _db.Users.Add(item);
+            var entry = _db.Entry(item);
+            if (entry.State == EntityState.Detached)
+                _db.Users.Add(item);
             await _db.SaveChangesAsync();
         }
 
