@@ -22,38 +22,55 @@ namespace BlogAppAPI.Controllers
 
         [HttpGet]
         [Route("GetAll")]
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return await users.GetAll();
+            var allUsers = await users.GetAll();
+            return StatusCode(200, allUsers);
         }
 
         [HttpGet]
-        [Route("{GetById}")]
-        public async Task<User> GetById(Guid id)
+        [Route("GetById")]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return await users.Get(id);
+            var user = await users.Get(id);
+            if (user != null)
+                return StatusCode(200, user);
+            else
+                return NotFound();
         }
 
         [HttpPost]
         [Route("Create")]
-        public async Task Create([FromBody] User user)
+        public async Task<IActionResult> Create([FromBody] User user)
         {
             await users.Create(user);
+            return StatusCode(200);
         }
 
         [HttpPut]
-        [Route("{id}")]
-        public async Task Update(Guid id, [FromBody] User user)
+        [Route("Update")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] User user)
         {
-            await users.Update(user);
+            if (await users.Get(id) != null)
+            {
+                await users.Update(user);
+                return StatusCode(200);
+            }
+            else
+                return NotFound();
         }
 
         [HttpDelete]
-        [Route("{id}")]
-        public async Task Delete(Guid id)
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(Guid id)
         {
             var user = await users.Get(id);
-            await users.Delete(user);
+            if (user != null)
+            {
+                await users.Delete(user);
+                return StatusCode(200);
+            }
+            return NotFound();
         }
     }
 }

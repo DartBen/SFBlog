@@ -1,8 +1,10 @@
-
 using AutoMapper;
+using BlogApp.BLL.RequestModels;
+using BlogApp.BLL.Validators;
 using BlogApp.DLL.Context;
 using BlogApp.DLL.Repository;
 using BlogApp.DLL.Repository.Interfaces;
+using FluentValidation;
 
 namespace BlogAppAPI
 {
@@ -26,6 +28,11 @@ namespace BlogAppAPI
             builder.Services.AddTransient<ICommentRepository, CommentRepository>();
             builder.Services.AddTransient<ITagRepository, TagRepository>();
             builder.Services.AddTransient<IArticleRepository, ArticleRepository>();
+
+            // малидаторы
+            builder.Services.AddTransient<IValidator<UserRequest>, AddUserRequestValidator>();
+
+            // аутентификация
 
 
             builder.Services.AddControllers();
