@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BlogApp.DLL.Repository
 {
@@ -45,7 +46,23 @@ namespace BlogApp.DLL.Repository
 
         public async Task Update(User item)
         {
-            _db.Users.Update(item);
+            var oldItem=Get(item.Id);
+
+            if (!string.IsNullOrEmpty(item.FirstName))
+                oldItem.Result.FirstName = item.FirstName;
+            if (!string.IsNullOrEmpty(item.LastName))
+                oldItem.Result.LastName = item.LastName;
+            if (!string.IsNullOrEmpty(item.Password))
+                oldItem.Result.Password = item.Password;
+            if (!string.IsNullOrEmpty(item.Login))
+                oldItem.Result.Login = item.Login;
+            if (!string.IsNullOrEmpty(item.Email))
+                oldItem.Result.Email = item.Email;
+
+            var entry = _db.Entry(oldItem.Result);
+
+            if (entry.State == EntityState.Detached)
+                _db.Users.Update(item);
             await _db.SaveChangesAsync();
         }
     }

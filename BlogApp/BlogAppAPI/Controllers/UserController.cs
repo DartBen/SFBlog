@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlogApp.BLL.RequestModels;
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -41,19 +42,26 @@ namespace BlogAppAPI.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> Create([FromBody] User user)
+        public async Task<IActionResult> Create(UserRequest userRequest)
         {
-            await users.Create(user);
-            return StatusCode(200);
+            if (userRequest.Id.ToString()==""|| await users.Get(userRequest.Id) == null)
+            {
+                var newUser = mapper.Map<UserRequest, User>(userRequest);
+                await users.Create(newUser);
+                return StatusCode(200);
+            }
+            else
+                return StatusCode(400, "Уже существует");
         }
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] User user)
+        public async Task<IActionResult> Update(UserRequest userRequest)
         {
-            if (await users.Get(id) != null)
+            if (await users.Get(userRequest.Id) != null)
             {
-                await users.Update(user);
+                var newUser = mapper.Map<UserRequest, User>(userRequest);
+                await users.Update(newUser);
                 return StatusCode(200);
             }
             else
