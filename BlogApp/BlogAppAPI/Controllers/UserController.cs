@@ -2,7 +2,11 @@
 using BlogApp.BLL.RequestModels;
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -85,5 +89,6 @@ namespace BlogAppAPI.Controllers
             }
             return NotFound();
         }
+
     }
 }

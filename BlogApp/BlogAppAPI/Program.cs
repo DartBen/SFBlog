@@ -31,12 +31,24 @@ namespace BlogAppAPI
 
             // малидаторы
             builder.Services.AddTransient<IValidator<UserRequest>, UserRequestValidator>();
-            builder.Services.AddTransient<IValidator<TagRequest>,  TagRequestValidator>();
+            builder.Services.AddTransient<IValidator<TagRequest>, TagRequestValidator>();
             builder.Services.AddTransient<IValidator<ArticleRequest>, ArticleRequestValidator>();
             builder.Services.AddTransient<IValidator<CommentRequest>, CommentRequestValidator>();
+            builder.Services.AddTransient<IValidator<RoleReqest>, RoleReqestValidator>();
 
             // аутентификация
-
+            builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
+                            .AddCookie("Cookies", options =>
+                            {
+                                options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
+                                {
+                                    OnRedirectToLogin = redirectContext =>
+                                    {
+                                        redirectContext.HttpContext.Response.StatusCode = 401;
+                                        return Task.CompletedTask;
+                                    }
+                                };
+                            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -54,8 +66,8 @@ namespace BlogAppAPI
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogApp.DLL.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace BlogApp.BLL.RequestModels
         public string Password { get; set; }
         public string Login { get; set; }
         public DateTime Birthday { get; set; }
+        public Role Role { get; set; }
     }
 }
