@@ -17,11 +17,13 @@ namespace BlogAppAPI.Controllers
     public class UserController : ControllerBase
     {
         private IUserRepository users;
+        private IRoleRepository roles;
         private IMapper mapper;
 
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        public UserController(IUserRepository userRepository,IRoleRepository role, IMapper mapper)
         {
             users = userRepository;
+            roles = role;
             this.mapper = mapper;
         }
 
@@ -88,6 +90,22 @@ namespace BlogAppAPI.Controllers
                 return StatusCode(200);
             }
             return NotFound();
+        }
+
+        [HttpPut]
+        [Route("UpdateRole")]
+        public async Task<IActionResult> UpdateRole(RoleReqest reqest, Guid userId)
+        {
+            var role = await roles.GetByName(reqest.Name);
+            var user = await users.Get(userId);
+            if (user != null && role != null)
+            {
+                user.Roles.Add(role);
+                await users.Update(user);
+                return StatusCode(200);
+            }
+            else
+                return NotFound();
         }
 
     }

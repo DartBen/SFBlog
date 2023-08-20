@@ -16,6 +16,8 @@ namespace BlogAppAPI
             CreateMap<Comment, Comment>();
             CreateMap<ArticleRequest, Article>();
             CreateMap<Article, ArticleRequest>();
+            CreateMap<RoleReqest, Role>();
+            CreateMap<Role,RoleReqest>();
         }
     }
 }

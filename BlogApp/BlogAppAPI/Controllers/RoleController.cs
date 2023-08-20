@@ -2,23 +2,22 @@
 using BlogApp.BLL.RequestModels;
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Data;
 
 namespace BlogAppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TagController : ControllerBase
+    public class RoleController : ControllerBase
     {
-        private ITagRepository tags;
+        private IRoleRepository roles;
         private IMapper mapper;
 
-        public TagController(ITagRepository tagRepository, IMapper mapper)
+        public RoleController(IRoleRepository roleRepository, IMapper mapper)
         {
-            tags = tagRepository;
+            roles = roleRepository;
             this.mapper = mapper;
         }
 
@@ -26,9 +25,9 @@ namespace BlogAppAPI.Controllers
         [Route("GetById")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var tag = await tags.Get(id);
-            if (tag != null)
-                return StatusCode(200, tag);
+            var role = await roles.Get(id);
+            if (role != null)
+                return StatusCode(200, role);
             else
                 return NotFound();
         }
@@ -37,7 +36,7 @@ namespace BlogAppAPI.Controllers
         [Route("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-            var allTags = await tags.GetAll();
+            var allTags = await roles.GetAll();
             if (allTags != null)
                 return StatusCode(200, allTags);
             else
@@ -46,12 +45,12 @@ namespace BlogAppAPI.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> Create(TagRequest request)
+        public async Task<IActionResult> Create(RoleReqest request)
         {
-            if (request.Id.ToString() == "" || await tags.Get(request.Id) == null)
+            if (request.Id.ToString() == "" || await roles.Get(request.Id) == null)
             {
-                var newtag = mapper.Map<TagRequest, Tag>(request);
-                await tags.Create(newtag);
+                var role = mapper.Map<RoleReqest, Role>(request);
+                await roles.Create(role);
                 return StatusCode(200);
             }
             else
@@ -60,12 +59,12 @@ namespace BlogAppAPI.Controllers
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update(TagRequest request)
+        public async Task<IActionResult> Update(RoleReqest request)
         {
-            if (await tags.Get(request.Id) != null)
+            if (await roles.Get(request.Id) != null)
             {
-                var newtag = mapper.Map<TagRequest, Tag>(request);
-                await tags.Update(newtag);
+                var role = mapper.Map<RoleReqest, Role>(request);
+                await roles.Update(role);
                 return StatusCode(200);
             }
             else
@@ -76,10 +75,10 @@ namespace BlogAppAPI.Controllers
         [Route("Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var tag = await tags.Get(id);
-            if (tag != null)
+            var role = await roles.Get(id);
+            if (role != null)
             {
-                await tags.Delete(tag);
+                await roles.Delete(role);
                 return StatusCode(200);
             }
             return NotFound();

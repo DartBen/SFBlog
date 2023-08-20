@@ -28,6 +28,7 @@ namespace BlogAppAPI
             builder.Services.AddTransient<ICommentRepository, CommentRepository>();
             builder.Services.AddTransient<ITagRepository, TagRepository>();
             builder.Services.AddTransient<IArticleRepository, ArticleRepository>();
+            builder.Services.AddTransient<IRoleRepository, RoleRepository>();
 
             // малидаторы
             builder.Services.AddTransient<IValidator<UserRequest>, UserRequestValidator>();

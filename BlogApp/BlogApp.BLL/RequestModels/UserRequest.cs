@@ -17,6 +17,6 @@ namespace BlogApp.BLL.RequestModels
         public string Password { get; set; }
         public string Login { get; set; }
         public DateTime Birthday { get; set; }
-        public Role Role { get; set; }
+        public RoleReqest Role { get; set; }
     }
 }
