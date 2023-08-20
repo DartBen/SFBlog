@@ -72,9 +72,9 @@ namespace BlogAppAPI.Controllers
                 return NotFound();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Route("Delete")]
-        public async Task<IActionResult>  Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var tag = await tags.Get(id);
             if (tag != null)
