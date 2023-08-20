@@ -14,6 +14,7 @@ namespace BlogApp.DLL.Models
         public string Password { get; set; }
         public string Login { get; set; }
         public string Email { get; set; }
+        public Role Role { get; set; }
 
         // Статьи потльзователя
         public List<Article> Articles { get; set; } = new List<Article>();
