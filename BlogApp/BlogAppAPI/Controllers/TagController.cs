@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using BlogApp.BLL.RequestModels;
+using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -20,31 +23,66 @@ namespace BlogAppAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("GetById")]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return new string[] { "value1", "value2" };
+            var tag = await tags.Get(id);
+            if (tags != null)
+                return StatusCode(200, tag);
+            else
+                return NotFound();
         }
 
-        [HttpGet("{id}")]
-        public string Get(Guid id)
+        [HttpGet]
+        [Route("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            return "value";
+            var allTags = await tags.GetAll();
+            if (allTags != null)
+                return StatusCode(200, allTags);
+            else
+                return NoContent();
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("Create")]
+        public async Task<IActionResult> Create(TagRequest request)
         {
-
+            if (request.Id.ToString() == "" || await tags.Get(request.Id) == null)
+            {
+                var newtag = mapper.Map<TagRequest, Tag>(request);
+                await tags.Create(newtag);
+                return StatusCode(200);
+            }
+            else
+                return StatusCode(400, "Уже существует");
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [Route("Update")]
+        public async Task<IActionResult> Update(TagRequest request)
         {
+            if (await tags.Get(request.Id) != null)
+            {
+                var newtag = mapper.Map<TagRequest, Tag>(request);
+                await tags.Update(newtag);
+                return StatusCode(200);
+            }
+            else
+                return NotFound();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [Route("Delete")]
+        public async Task<IActionResult>  Delete(Guid id)
         {
+            var tag = await tags.Get(id);
+            if (tag != null)
+            {
+                await tags.Delete(tag);
+                return StatusCode(200);
+            }
+            return NotFound();
         }
     }
 }

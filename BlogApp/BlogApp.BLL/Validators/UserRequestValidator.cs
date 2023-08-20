@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BlogApp.BLL.Validators
 {
-    public class AddUserRequestValidator : AbstractValidator<UserRequest>
+    public class UserRequestValidator : AbstractValidator<UserRequest>
     {
-        public AddUserRequestValidator()
+        public UserRequestValidator()
         {
             RuleFor(x => x.FirstName).NotEmpty().MaximumLength(50);
             RuleFor(x => x.LastName).NotEmpty().MaximumLength(50);

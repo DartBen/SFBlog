@@ -10,6 +10,8 @@ namespace BlogAppAPI
         {
             CreateMap<UserRequest, User>();
             CreateMap<User, UserRequest>();
+            CreateMap<TagRequest, Tag>();
+            CreateMap<Tag, TagRequest>();
         }
     }
 }

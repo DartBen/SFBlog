@@ -26,7 +26,12 @@ namespace BlogAppAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             var allUsers = await users.GetAll();
-            return StatusCode(200, allUsers);
+            if (allUsers != null)
+            {
+                return StatusCode(200, allUsers);
+            }
+            else
+                return NoContent();
         }
 
         [HttpGet]
@@ -42,11 +47,11 @@ namespace BlogAppAPI.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> Create(UserRequest userRequest)
+        public async Task<IActionResult> Create(UserRequest request)
         {
-            if (userRequest.Id.ToString()==""|| await users.Get(userRequest.Id) == null)
+            if (request.Id.ToString() == "" || await users.Get(request.Id) == null)
             {
-                var newUser = mapper.Map<UserRequest, User>(userRequest);
+                var newUser = mapper.Map<UserRequest, User>(request);
                 await users.Create(newUser);
                 return StatusCode(200);
             }
@@ -56,11 +61,11 @@ namespace BlogAppAPI.Controllers
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update(UserRequest userRequest)
+        public async Task<IActionResult> Update(UserRequest request)
         {
-            if (await users.Get(userRequest.Id) != null)
+            if (await users.Get(request.Id) != null)
             {
-                var newUser = mapper.Map<UserRequest, User>(userRequest);
+                var newUser = mapper.Map<UserRequest, User>(request);
                 await users.Update(newUser);
                 return StatusCode(200);
             }
