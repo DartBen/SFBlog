@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BlogApp.BLL.RequestModels;
+using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,36 +21,69 @@ namespace BlogAppAPI.Controllers
             this.mapper = mapper;
         }
 
-        // GET: api/<ArticleController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            var allArticle = await articles.GetAll();
+            if (allArticle != null)
+            {
+                return StatusCode(200, allArticle);
+            }
+            else
+                return NoContent();
         }
 
-        // GET api/<ArticleController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("GetById")]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return "value";
+            var article = await articles.Get(id);
+            if (article != null)
+                return StatusCode(200, article);
+            else
+                return NotFound();
         }
 
-        // POST api/<ArticleController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("Create")]
+        public async Task<IActionResult> Create(ArticleRequest request)
         {
+            if (request.Id.ToString() == "" || await articles.Get(request.Id) == null)
+            {
+                var newArticle = mapper.Map<ArticleRequest, Article>(request);
+                await articles.Create(newArticle);
+                return StatusCode(200);
+            }
+            else
+                return StatusCode(400, "Уже существует");
         }
 
-        // PUT api/<ArticleController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [Route("Update")]
+        public async Task<IActionResult> Update(ArticleRequest request)
         {
+            if (await articles.Get(request.Id) != null)
+            {
+                var newArticle = mapper.Map<ArticleRequest, Article>(request);
+                await articles.Update(newArticle);
+                return StatusCode(200);
+            }
+            else
+                return NotFound();
         }
 
-        // DELETE api/<ArticleController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(Guid id)
         {
+            var newArticle = await articles.Get(id);
+            if (newArticle != null)
+            {
+                await articles.Delete(newArticle);
+                return StatusCode(200);
+            }
+            return NotFound();
         }
     }
 }

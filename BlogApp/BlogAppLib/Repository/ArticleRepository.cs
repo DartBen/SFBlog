@@ -2,11 +2,6 @@
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlogApp.DLL.Repository
 {
@@ -45,7 +40,17 @@ namespace BlogApp.DLL.Repository
 
         public async Task Update(Article item)
         {
-            _db.Articles.Update(item);
+            var oldItem = Get(item.Id);
+
+            if (!string.IsNullOrEmpty(item.Title))
+                oldItem.Result.Title = item.Title;
+            if (!string.IsNullOrEmpty(item.BodyText))
+                oldItem.Result.BodyText = item.BodyText;
+
+            var entry = _db.Entry(oldItem.Result);
+
+            if (entry.State == EntityState.Detached)
+                _db.Articles.Update(item);
             await _db.SaveChangesAsync();
         }
     }

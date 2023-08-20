@@ -32,6 +32,8 @@ namespace BlogAppAPI
             // малидаторы
             builder.Services.AddTransient<IValidator<UserRequest>, UserRequestValidator>();
             builder.Services.AddTransient<IValidator<TagRequest>,  TagRequestValidator>();
+            builder.Services.AddTransient<IValidator<ArticleRequest>, ArticleRequestValidator>();
+            builder.Services.AddTransient<IValidator<CommentRequest>, CommentRequestValidator>();
 
             // аутентификация
 

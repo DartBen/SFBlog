@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BlogApp.BLL.RequestModels;
+using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,36 +21,69 @@ namespace BlogAppAPI.Controllers
             this.mapper = mapper;
         }
 
-        // GET: api/<CommentController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            var allComments = await comments.GetAll();
+            if (allComments != null)
+            {
+                return StatusCode(200, allComments);
+            }
+            else
+                return NoContent();
         }
 
-        // GET api/<CommentController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("GetById")]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return "value";
+            var comment = await comments.Get(id);
+            if (comment != null)
+                return StatusCode(200, comment);
+            else
+                return NotFound();
         }
 
-        // POST api/<CommentController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("Create")]
+        public async Task<IActionResult> Create(CommentRequest request)
         {
+            if (request.Id.ToString() == "" || await comments.Get(request.Id) == null)
+            {
+                var newComment = mapper.Map<CommentRequest, Comment>(request);
+                await comments.Create(newComment);
+                return StatusCode(200);
+            }
+            else
+                return StatusCode(400, "Уже существует");
         }
 
-        // PUT api/<CommentController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [Route("Update")]
+        public async Task<IActionResult> Update(CommentRequest request)
         {
+            if (await comments.Get(request.Id) != null)
+            {
+                var newComment = mapper.Map<CommentRequest, Comment>(request);
+                await comments.Update(newComment);
+                return StatusCode(200);
+            }
+            else
+                return NotFound();
         }
 
-        // DELETE api/<CommentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(Guid id)
         {
+            var user = await comments.Get(id);
+            if (user != null)
+            {
+                await comments.Delete(user);
+                return StatusCode(200);
+            }
+            return NotFound();
         }
     }
 }
