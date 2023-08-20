@@ -14,5 +14,6 @@ namespace BlogApp.DLL.Repository.Interfaces
         Task Create(Article item);
         Task Update(Article item);
         Task Delete(Article item);
+        Task<IEnumerable<Article>> GetAllByAuthorId(Guid authorGuid);
     }
 }

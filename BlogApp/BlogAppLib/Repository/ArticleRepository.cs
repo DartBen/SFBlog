@@ -38,6 +38,11 @@ namespace BlogApp.DLL.Repository
             return await _db.Articles.ToListAsync();
         }
 
+        public async Task<IEnumerable<Article>> GetAllByAuthorId(Guid id)
+        {
+            return await _db.Articles.Where(x => x.Author_Id==id).ToListAsync();
+        }
+
         public async Task Update(Article item)
         {
             var oldItem = Get(item.Id);

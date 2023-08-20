@@ -33,6 +33,19 @@ namespace BlogAppAPI.Controllers
             else
                 return NoContent();
         }
+        [HttpGet]
+        [Route("GetAllByAuthor")]
+        public async Task<IActionResult> GetAllByAuthorId(Guid authorGuid)
+        {
+            var allArticle = await articles.GetAllByAuthorId(authorGuid);
+
+            if (allArticle != null)
+            {
+                return StatusCode(200, allArticle);
+            }
+            else
+                return NoContent();
+        }
 
         [HttpGet]
         [Route("GetById")]
