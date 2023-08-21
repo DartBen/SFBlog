@@ -22,6 +22,8 @@ namespace BlogApp.DLL.Repository
 
         public async Task Create(Role item)
         {
+            Guid roleId = Guid.NewGuid();
+            item.Id = roleId;
             var entry = _db.Entry(item);
             if (entry.State == EntityState.Detached)
                 _db.Roles.Add(item);

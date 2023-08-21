@@ -38,6 +38,11 @@ namespace BlogApp.DLL.Repository
             return await _db.Users.ToListAsync();
         }
 
+        public async Task<User> GetByLogin(string login)
+        {
+            return await _db.Users.FirstOrDefaultAsync(x => x.Login == login);
+        }
+
         public async Task Update(User item)
         {
             var oldItem=Get(item.Id);
