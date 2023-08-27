@@ -76,7 +76,6 @@ namespace BlogApp
                 app.UseSwaggerUI();
             }
 
-            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
