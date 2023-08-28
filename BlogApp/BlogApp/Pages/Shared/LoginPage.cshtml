@@ -1,14 +1,14 @@
 ﻿@page
-@*@model BlogApp.BLL.Views.LoginViewModel*@
+@model BlogApp.BLL.Views.LoginViewModel
 @{
-    Layout = "Shared/_Layout.cshtml";
-    ViewData["Title"] = "Login";
+    Layout = "_Layout.cshtml";
+    ViewData["Title"] = "LoginPage";
 }
 
 
 <div>
     <h4 class="center">Добро пожаловать!!!!</h4>
-   @* <form method="post" asp-controller="Users" asp-action="Login">
+    <form method="post" asp-controller="Users" asp-action="Login">
         <div asp-validation-summary="ModelOnly"></div>
         <div>
             <label asp-for="Email"></label><br />
@@ -26,5 +26,5 @@
         <div>
             <input type="submit" value="Войти" />
         </div>
-    </form>*@
+    </form>
 </div>
