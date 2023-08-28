@@ -84,7 +84,6 @@ namespace BlogApp
             app.UseAuthentication();
             app.UseAuthorization();
 
-
             app.MapControllers();
             app.MapRazorPages();
 

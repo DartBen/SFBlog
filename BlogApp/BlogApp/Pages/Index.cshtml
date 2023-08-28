@@ -1,10 +1,6 @@
 ﻿@page
-@model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    Layout = "Shared/_Layout.cshtml";
+    ViewData["Title"] = "Welcome";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Вы уже зарегестрированны? <a asp-area="" asp-page="Shared/Login">Войти</a></h2>

@@ -14,8 +14,4 @@
     <ProjectReference Include="..\BlogAppLib\BlogApp.DLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
-
 </Project>

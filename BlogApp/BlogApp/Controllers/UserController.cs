@@ -14,9 +14,7 @@ using System.Data;
 
 namespace BlogAppAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
         private IUserRepository users;
         private IRoleRepository roles;
@@ -117,11 +115,6 @@ namespace BlogAppAPI.Controllers
         [Route("Authenticate")]
         public async Task<User> Authenticate(UserRequest request, string login, string password)
         {
-            //if (!string.IsNullOrEmpty(request.Login) ||
-            //    (!string.IsNullOrEmpty(request.Password)
-            //    && !string.IsNullOrEmpty(request.Email)))
-            //    throw new ArgumentNullException("Введенные данные некорректны");
-
             var user = users.GetByLogin(login).Result;
             if (user.Login != login)
                 throw new AuthenticationException("Неверный логин");
@@ -144,6 +137,13 @@ namespace BlogAppAPI.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
             return user;
+        }
+
+        [Route("Login")]
+        [HttpGet]
+        public IActionResult Login()
+        {           
+            return View("Login");
         }
 
     }
