@@ -1,19 +1,18 @@
 ﻿@page
 @model BlogApp.BLL.Views.LoginViewModel
 @{
-    Layout = "_Layout.cshtml";
+    Layout = "Shared/_Layout.cshtml";
     ViewData["Title"] = "LoginPage";
 }
 
-
 <div>
     <h4 class="center">Добро пожаловать!!!!</h4>
-    <form method="post" asp-controller="Users" asp-action="Login">
+    <form method="post" asp-controller="User" asp-action="Login">
         <div asp-validation-summary="ModelOnly"></div>
         <div>
-            <label asp-for="Email"></label><br />
-            <input asp-for="Email" />
-            <span asp-validation-for="Email"></span>
+            <label asp-for="Login"></label><br />
+            <input asp-for="Login" />
+            <span asp-validation-for="Login"></span>
         </div>
         <div>
             <label asp-for="Password"></label><br />

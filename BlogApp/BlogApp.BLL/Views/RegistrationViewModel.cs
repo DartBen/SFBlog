@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace BlogApp.BLL.Views
 {
-    public class LoginViewModel
+    public class RegistrationViewModel
     {
         [Required]
         [Display(Name = "Login", Prompt = "Введите Login")]

@@ -9,6 +9,8 @@ using System.Security.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using BlogApp.BLL.Views;
+using System.Reflection.Metadata.Ecma335;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -139,11 +141,24 @@ namespace BlogAppAPI.Controllers
             return user;
         }
 
+        [HttpPost]
         [Route("Login")]
-        [HttpGet]
-        public IActionResult Login()
-        {           
-            return View("Login");
+        public IActionResult Login(LoginViewModel model)
+        {
+            Console.WriteLine(model.Login);
+
+
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Route("Registrate")]
+        public IActionResult Registrate(RegistrationViewModel model)
+        {
+            Console.WriteLine(model.Login);
+
+            return RedirectToAction("Index");
         }
 
     }
