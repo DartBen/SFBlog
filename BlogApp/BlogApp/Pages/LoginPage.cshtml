@@ -1,13 +1,13 @@
 ﻿@page
-@model BlogApp.BLL.Views.RegistrationViewModel
+@model BlogApp.BLL.Views.LoginViewModel
 @{
-    Layout = "Shared/_Layout";
-    ViewData["Title"] = "RegistrationPage";
+    Layout = "Shared/_Layout.cshtml";
+    ViewData["Title"] = "LoginPage";
 }
 
 <div>
     <h4 class="center">Добро пожаловать!!!!</h4>
-    <form method="post" asp-controller="User" asp-action="Registrate">
+    <form method="post" asp-controller="User" asp-action="Login">
         <div asp-validation-summary="ModelOnly"></div>
         <div>
             <label asp-for="Login"></label><br />

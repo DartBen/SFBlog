@@ -149,7 +149,7 @@ namespace BlogAppAPI.Controllers
 
 
 
-            return View(new MainViewModel());
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -158,7 +158,7 @@ namespace BlogAppAPI.Controllers
         {
             Console.WriteLine(model.Login);
 
-            return View();
+            return RedirectToAction("Index");
         }
 
     }
