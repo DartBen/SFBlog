@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BlogApp.BLL.RequestModels;
+using BlogApp.BLL.Views;
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -81,6 +82,22 @@ namespace BlogApp.Controllers
                 return StatusCode(200);
             }
             return NotFound();
+        }
+
+        [HttpPost]
+        [Route("AddRole")]
+        public async Task<IActionResult> AddRole(CreateRoleViewModel model)
+        {
+            var allroles = await roles.GetAll();
+            var temp = allroles.Where(x => x.Name == model.Name).FirstOrDefault();
+            if (temp != null) return StatusCode(400);
+            RoleReqest request = new RoleReqest();
+            request.Id = Guid.NewGuid();
+            request.Name = model.Name;
+
+            var result = Create(request);
+
+            return RedirectToPage("/Index");
         }
     }
 }

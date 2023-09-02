@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
 using System.Security.Claims;
 using BlogAppAPI.Controllers;
+using NuGet.Protocol.Plugins;
+using System.Xml.Linq;
 
 namespace BlogApp.Controllers
 {
@@ -62,22 +64,58 @@ namespace BlogApp.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            Console.WriteLine(model.Login);
+            var user = await users.GetByLogin(model.Login);
 
+                if (user == null)
+                return RedirectToPage("/LoginPage");
 
+            UserRequest request = new UserRequest();
+
+            request.Role = new RoleReqest(Guid.Empty ,"User");
+
+            if(user.Roles.Where(x => x.Name == "Admin") != null)
+            {
+                request.Role.Name = "Admin";
+            }
+            else if (user.Roles.Where(x => x.Name == "Moderator") != null)
+            {
+                request.Role.Name = "Moderator";
+            }
+
+            var result =Authenticate(request, model.Login, model.Password);
 
             return RedirectToPage("/Index");
         }
 
         [HttpPost]
         [Route("Registration")]
-        public IActionResult Registration(RegistrationViewModel model)
+        public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
-            Console.WriteLine(model.Login);
+            var user = await users.GetByLogin(model.Login);
 
-            return RedirectToPage("/Index");
+            if (user != null)
+                return RedirectToPage("/RegistrationPage");
+
+            UserRequest request = new UserRequest();
+            request.Role = new RoleReqest(Guid.Empty, "User");
+            request.FirstName = model.FirstName;
+            request.LastName = model.LastName;
+            request.Email = model.Email;    
+            request.Password = model.Password;
+            request.Login = model.Login;
+
+            Guid guid = Guid.NewGuid();
+            if (await users.Get(guid) == null)
+            {
+                var newUser = mapper.Map<UserRequest, User>(request);
+                newUser.Id = guid;
+                await users.Create(newUser);
+            }
+
+
+                return RedirectToPage("/Index");
         }
 
 

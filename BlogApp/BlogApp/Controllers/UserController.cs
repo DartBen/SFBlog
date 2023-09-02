@@ -54,6 +54,17 @@ namespace BlogAppAPI.Controllers
                 return NotFound();
         }
 
+        [HttpGet]
+        [Route("GetByLogin")]
+        public async Task<IActionResult> GetByLogin(string login)
+        {
+            var user = await users.GetByLogin(login);
+            if (user != null)
+                return StatusCode(200, user);
+            else
+                return NotFound();
+        }
+
         [HttpPost]
         [Route("Create")]
         public async Task<IActionResult> Create(UserRequest request)

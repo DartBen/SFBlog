@@ -5,19 +5,23 @@
     ViewData["Title"] = "LoginPage";
 }
 
-<div>
+<div class="block-reg background-white">
     <h4 class="center">Добро пожаловать!!!!</h4>
     <form method="post" asp-controller="Account" asp-action="Login">
         <div asp-validation-summary="ModelOnly"></div>
         <div>
-            <label asp-for="Login"></label><br />
-            <input asp-for="Login" />
-            <span asp-validation-for="Login"></span>
+            <div class="mrgn">
+                <label asp-for="Login"></label><br />
+                <input asp-for="Login" />
+                <span asp-validation-for="Login"></span>
+            </div>
         </div>
         <div>
-            <label asp-for="Password"></label><br />
-            <input asp-for="Password" />
-            <span asp-validation-for="Password"></span>
+            <div class="mrgn">
+                <label asp-for="Password"></label><br />
+                <input asp-for="Password" />
+                <span asp-validation-for="Password"></span>
+            </div>
         </div>
         <div>
             <input type="checkbox" asp-for="RememberMe" value="true"> Да<Br>

@@ -5,6 +5,8 @@ using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,6 +42,18 @@ namespace BlogApp.Controllers
             var allTags = await tags.GetAll();
             if (allTags != null)
                 return StatusCode(200, allTags);
+            else
+                return NoContent();
+        }
+
+        [HttpGet]
+        [Route("GetAllByName")]
+        public async Task<IActionResult> GetAllByName(string name)
+        {
+            var allTags = await tags.GetAll();
+            var temp = allTags.Where(x => x.TagName == name).FirstOrDefault();
+            if (temp != null)
+                return StatusCode(200, temp);
             else
                 return NoContent();
         }
@@ -87,9 +101,16 @@ namespace BlogApp.Controllers
 
         [HttpPost]
         [Route("AddTag")]
-        public IActionResult AddTag(CreateTagViewModel model)
+        public async Task<IActionResult> AddTag(CreateTagViewModel model)
         {
+            var allTags = await tags.GetAll();
+            var temp = allTags.Where(x => x.TagName == model.Name).FirstOrDefault();
+            if (temp != null) return StatusCode(400);
+            TagRequest request = new TagRequest();
+            request.Id = Guid.NewGuid();
+            request.TagName = model.Name;
 
+            var result = Create(request);
 
             return RedirectToPage("/Index");
         }
