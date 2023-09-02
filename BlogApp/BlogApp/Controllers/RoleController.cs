@@ -9,8 +9,7 @@ using System.Data;
 namespace BlogApp.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class RoleController : ControllerBase
+    public class RoleController : Controller
     {
         private IRoleRepository roles;
         private IMapper mapper;

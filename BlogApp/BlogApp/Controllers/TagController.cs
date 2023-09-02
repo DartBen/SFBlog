@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BlogApp.BLL.RequestModels;
+using BlogApp.BLL.Views;
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -10,8 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogApp.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class TagController : ControllerBase
+    public class TagController : Controller
     {
         private ITagRepository tags;
         private IMapper mapper;
@@ -83,6 +83,15 @@ namespace BlogApp.Controllers
                 return StatusCode(200);
             }
             return NotFound();
+        }
+
+        [HttpPost]
+        [Route("AddTag")]
+        public IActionResult AddTag(CreateTagViewModel model)
+        {
+
+
+            return RedirectToPage("/Index");
         }
     }
 }

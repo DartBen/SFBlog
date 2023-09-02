@@ -16,6 +16,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace BlogAppAPI.Controllers
 {
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
         private IUserRepository users;
@@ -113,53 +114,7 @@ namespace BlogAppAPI.Controllers
                 return NotFound();
         }
 
-        [HttpPost]
-        [Route("Authenticate")]
-        public async Task<User> Authenticate(UserRequest request, string login, string password)
-        {
-            var user = users.GetByLogin(login).Result;
-            if (user.Login != login)
-                throw new AuthenticationException("Неверный логин");
-
-            if (user.Password != password)
-                throw new AuthenticationException("Неверный пароль");
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, login), //request.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, request.Role.Name)
-            };
-
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(
-                claims,
-                "AddCookies",
-                ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-            return user;
-        }
-
-        [HttpPost]
-        [Route("Login")]
-        public IActionResult Login(LoginViewModel model)
-        {
-            Console.WriteLine(model.Login);
-
-
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        [Route("Registrate")]
-        public IActionResult Registrate(RegistrationViewModel model)
-        {
-            Console.WriteLine(model.Login);
-
-            return RedirectToAction("Index");
-        }
+ 
 
     }
 }

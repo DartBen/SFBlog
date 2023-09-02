@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogApp.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentController : Controller
     {
         private ICommentRepository comments;
         private IMapper mapper;

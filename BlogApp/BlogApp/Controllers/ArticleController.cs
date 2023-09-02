@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogApp.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class ArticleController : ControllerBase
+    public class ArticleController : Controller
     {
         private IArticleRepository articles;
         private IMapper mapper;
