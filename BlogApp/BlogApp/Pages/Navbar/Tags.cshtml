@@ -8,19 +8,19 @@
     <h4 class="center">Все тэги</h4>
     @foreach (var tag in Model.tags)
     {
-        <form>
-            <div class="RoleBlock">
+        <form class="frm" >
+            <div class="Block">
                 <label>@tag.TagName</label>
-                @*<label>@role.</label>*@
                 <label>@tag.Id</label>
+                <input type="submit" value="Отправить" />
             </div>
         </form>
     }
 
 </div>
-
+@*method="get" asp-controller="Tag" asp-action="GetTagToUpdate" asp-route="@tag.Id"*@
 <style type="text/css">
-    .RoleBlock {
+    .Block {
         width: 600px;
         padding: 5px;
         padding-right: 30px;

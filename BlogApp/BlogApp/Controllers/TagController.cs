@@ -114,5 +114,12 @@ namespace BlogApp.Controllers
 
             return RedirectToPage("/Index");
         }
+
+        //[HttpPost]
+        [Route("GetTagToUpdate/{id?}")]
+        public IActionResult GetTagToUpdate(CreateTagViewModel model, [FromRoute] Guid Id)
+        {
+            return RedirectToRoute("TagUpdatePage", new {id=Id});
+        }
     }
 }
