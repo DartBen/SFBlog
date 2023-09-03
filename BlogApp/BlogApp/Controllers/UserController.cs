@@ -125,7 +125,38 @@ namespace BlogAppAPI.Controllers
                 return NotFound();
         }
 
- 
+        [HttpPost]
+        [Route("UserUpdate")]
+        public async Task<IActionResult> UserUpdate(UserUpdateViewModel request)
+        {
+            try
+            {
+                Console.WriteLine("UserUpdate");
+                List<Role> requastRoles = new List<Role>();
+
+                var allRoles = await roles.GetAll();
+
+                foreach (var c in request.CheckRoles)
+                {
+                    var tmp = allRoles.FirstOrDefault(x => x.Name == c.roleName & c.RememberMe);
+                    if (tmp != null)
+                        requastRoles.Add(tmp);
+                }
+
+                var user =await users.GetByLogin(request.Login);
+
+                user.Roles = requastRoles;
+                user.Email = request.Email;
+                user.Password = request.Password;
+                user.FirstName = request.FirstName;
+                user.LastName = request.LastName;
+
+                users.Update(user);
+            }
+            catch { Console.WriteLine("UserUpdate : Error"); }
+
+            return RedirectToPage("/Index");
+        }
 
     }
 }

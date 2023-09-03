@@ -107,14 +107,6 @@ namespace BlogApp.Controllers
         [Route("AddArticle")]
         public async Task<IActionResult> AddArticle(CreateArticleViewModel model)
         {
-            //var allroles = await roles.GetAll();
-            //var temp = allroles.Where(x => x.Name == model.Name).FirstOrDefault();
-            //if (temp != null) return StatusCode(400);
-            //RoleReqest request = new RoleReqest();
-            //request.Id = Guid.NewGuid();
-            //request.Name = model.Name;
-
-            //var result = Create(request);
             try
             {
                 Console.WriteLine("AddArticle");
