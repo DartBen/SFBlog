@@ -4,3 +4,44 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Роли";
 }
+<div class="block-reg background-white">
+    <h4 class="center">Все Роли</h4>
+
+    <div>
+        @*        <table class="table">
+        <thead>
+        <tr><th>Идентификатор</th><th>Имя роли</th><th>Описание</th></tr>
+        </thead>
+        <tbody>
+        @foreach(var role in Model.Roles)
+        {
+        <tr><td>@role.Id</td><td>@role.Name</td><td>@role.Description</td></tr>
+        }
+        </tbody>
+        </table>*@
+
+        @foreach (var role in Model.Roles)
+        {
+            <form>
+                <div class="RoleBlock">
+                    <label>@role.Name</label>
+                    <label>@role.Description</label>
+                    <label>@role.Id</label>
+                </div>
+            </form>
+        }
+
+
+    </div>
+</div>
+
+<style type="text/css">
+    .RoleBlock {
+        width: 600px;
+        padding: 5px;
+        padding-right: 30px;
+        margin: 5px;
+        border: solid 1px black;
+    }
+</style>
+

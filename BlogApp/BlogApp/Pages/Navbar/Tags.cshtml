@@ -4,3 +4,27 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Тэги";
 }
+<div class="block-reg background-white">
+    <h4 class="center">Все тэги</h4>
+    @foreach (var tag in Model.tags)
+    {
+        <form>
+            <div class="RoleBlock">
+                <label>@tag.TagName</label>
+                @*<label>@role.</label>*@
+                <label>@tag.Id</label>
+            </div>
+        </form>
+    }
+
+</div>
+
+<style type="text/css">
+    .RoleBlock {
+        width: 600px;
+        padding: 5px;
+        padding-right: 30px;
+        margin: 5px;
+        border: solid 1px black;
+    }
+</style>

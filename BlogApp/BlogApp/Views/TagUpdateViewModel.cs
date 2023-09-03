@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace BlogApp.Views
 {
-    public class CreateTagViewModel
+    public class TagUpdateViewModel
     {
         [Required]
         [Display(Name = "Название", Prompt = "Введите название")]
@@ -16,5 +11,7 @@ namespace BlogApp.Views
 
         [Display(Name = "Описание", Prompt = "Введите описание")]
         public string? Comment { get; set; }
+
+        public TagUpdateViewModel() { }
     }
 }
