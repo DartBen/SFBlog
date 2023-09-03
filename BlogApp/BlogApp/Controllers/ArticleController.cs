@@ -2,7 +2,10 @@
 using BlogApp.BLL.RequestModels;
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
+using BlogApp.Pages;
+using BlogApp.Views;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,11 +15,13 @@ namespace BlogApp.Controllers
     public class ArticleController : Controller
     {
         private IArticleRepository articles;
+        private ITagRepository tags;
         private IMapper mapper;
 
-        public ArticleController(IArticleRepository articleRepository, IMapper mapper)
+        public ArticleController(IArticleRepository articleRepository, ITagRepository tagRepository, IMapper mapper)
         {
             articles = articleRepository;
+            tags = tagRepository;
             this.mapper = mapper;
         }
 
@@ -97,5 +102,62 @@ namespace BlogApp.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost]
+        [Route("AddArticle")]
+        public async Task<IActionResult> AddArticle(CreateArticleViewModel model)
+        {
+            //var allroles = await roles.GetAll();
+            //var temp = allroles.Where(x => x.Name == model.Name).FirstOrDefault();
+            //if (temp != null) return StatusCode(400);
+            //RoleReqest request = new RoleReqest();
+            //request.Id = Guid.NewGuid();
+            //request.Name = model.Name;
+
+            //var result = Create(request);
+            try
+            {
+                Console.WriteLine("AddArticle");
+                List<Tag> requastTags = new List<Tag>();
+
+                var allTags = await tags.GetAll();
+
+
+
+                foreach (var c in model.CheckTags)
+                {
+                    var tmp = allTags.FirstOrDefault(x =>x.TagName == c.tagName & c.RememberMe );
+                    if (tmp != null)
+                        requastTags.Add(tmp);
+                }
+
+                Article article = new Article();
+                article.Tags = requastTags;
+                article.BodyText = model.ArticleBody;
+                article.CreateTime = DateTime.Now;
+                article.Title = model.Name;
+
+                CreateArticle(article);
+
+
+            }
+            catch { }
+
+            return RedirectToPage("/Index");
+        }
+
+        [HttpPost]
+        [Route("CreateArticle")]
+        public async Task<IActionResult> CreateArticle(Article article)
+        {
+            if (article.Id.ToString() == "" || await articles.Get(article.Id) == null)
+            {
+                await articles.Create(article);
+                return StatusCode(200);
+            }
+            else
+                return StatusCode(400, "Уже существует");
+        }
+
     }
 }

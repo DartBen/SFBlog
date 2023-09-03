@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BlogApp.BLL.RequestModels;
-using BlogApp.BLL.Views;
+using BlogApp.Views;
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;

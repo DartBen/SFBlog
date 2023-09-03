@@ -7,6 +7,7 @@ using BlogApp.DLL.Repository;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
 using BlogAppAPI.Controllers;
+using BlogApp.Controllers;
 
 namespace BlogApp
 {
@@ -39,7 +40,13 @@ namespace BlogApp
             builder.Services.AddTransient<IValidator<CommentRequest>, CommentRequestValidator>();
             builder.Services.AddTransient<IValidator<RoleReqest>, RoleReqestValidator>();
 
+            // уже просто лень делать интерфейсы
             builder.Services.AddTransient<UserController, UserController>();
+            builder.Services.AddTransient<TagController, TagController>();
+            builder.Services.AddTransient<ArticleController, ArticleController>();
+            builder.Services.AddTransient<CommentController, CommentController>();
+            builder.Services.AddTransient<RoleController, RoleController>();
+
             // аутентификация
             builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
                             .AddCookie("Cookies", options =>

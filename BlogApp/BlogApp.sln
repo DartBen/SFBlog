@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.DLL", "BlogAppLib\BlogApp.DLL.csproj", "{75BAB964-408A-4E9A-A75B-3EE6A162F83B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.DLL", "BlogApp.DLL\BlogApp.DLL.csproj", "{75BAB964-408A-4E9A-A75B-3EE6A162F83B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.BLL", "BlogApp.BLL\BlogApp.BLL.csproj", "{B8F0D207-EEB5-42FD-907B-8DDEEB78B066}"
 EndProject

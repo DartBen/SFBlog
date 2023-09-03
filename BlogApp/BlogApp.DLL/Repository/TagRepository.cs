@@ -33,6 +33,12 @@ namespace BlogApp.DLL.Repository
             return await _db.Tags.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Tag>> GetByName(string name)
+        {
+            var tmp = await GetAll();
+            return tmp.Where(x => x.TagName == name).ToList() ;
+        }
+
         public async Task<IEnumerable<Tag>> GetAll()
         {
             return await _db.Tags.ToListAsync();

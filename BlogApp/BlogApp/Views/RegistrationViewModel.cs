@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogApp.BLL.Views
+namespace BlogApp.Views
 {
     public class RegistrationViewModel
     {
