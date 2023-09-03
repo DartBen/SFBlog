@@ -117,9 +117,10 @@ namespace BlogApp.Controllers
 
         //[HttpPost]
         [Route("GetTagToUpdate/{id?}")]
-        public IActionResult GetTagToUpdate(CreateTagViewModel model, [FromRoute] Guid Id)
+        public IActionResult GetTagToUpdate(CreateTagViewModel model, [FromRoute] Guid ID)
         {
-            return RedirectToRoute("TagUpdatePage", new {id=Id});
+            //return RedirectToRoute("TagUpdatePage", new {id=Id});
+            return RedirectToPage("/TagUpdatePage", new { id = ID.ToString()});
         }
     }
 }
