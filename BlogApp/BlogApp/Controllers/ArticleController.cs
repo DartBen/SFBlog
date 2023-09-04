@@ -4,8 +4,11 @@ using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
 using BlogApp.Pages;
 using BlogApp.Views;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,12 +19,14 @@ namespace BlogApp.Controllers
     {
         private IArticleRepository articles;
         private ITagRepository tags;
+        private IUserRepository _users;
         private IMapper mapper;
 
-        public ArticleController(IArticleRepository articleRepository, ITagRepository tagRepository, IMapper mapper)
+        public ArticleController(IArticleRepository articleRepository, ITagRepository tagRepository, IUserRepository userRepository, IMapper mapper)
         {
             articles = articleRepository;
             tags = tagRepository;
+            _users = userRepository;
             this.mapper = mapper;
         }
 
@@ -109,6 +114,34 @@ namespace BlogApp.Controllers
         {
             try
             {
+                User user = null;
+                IEnumerable<Claim> claims;
+                string Login = string.Empty;
+
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    claims = identity.Claims;
+
+                    if (claims != null)
+                    {
+                        foreach (Claim claim in claims)
+                        {
+                            if (claim.Type == ClaimTypes.Name)
+                            {
+                                Login = claim.Value;
+                            }
+                        }
+                    }
+                    if (Login != string.Empty)
+                    {
+                        user = await _users.GetByLogin(Login);
+                    }
+
+
+                }
+
+
                 Console.WriteLine("AddArticle");
                 List<Tag> requastTags = new List<Tag>();
 
@@ -128,6 +161,7 @@ namespace BlogApp.Controllers
                 article.BodyText = model.ArticleBody;
                 article.CreateTime = DateTime.Now;
                 article.Title = model.Name;
+                article.Author = user;
 
                 CreateArticle(article);
 

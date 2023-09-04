@@ -22,6 +22,7 @@ namespace BlogAppAPI.Controllers
         private IUserRepository users;
         private IRoleRepository roles;
         private IMapper mapper;
+        private readonly IHttpContextAccessor _http;
 
         public UserController(IUserRepository userRepository,IRoleRepository role, IMapper mapper)
         {
@@ -169,6 +170,13 @@ namespace BlogAppAPI.Controllers
         {
             //return RedirectToRoute("TagUpdatePage", new {id=Id});
             return RedirectToPage("/UserUpdatePage", new { id = ID.ToString() });
+        }
+
+        [HttpGet]
+        [Route("GetCurrentUser")]
+        public string GetCurrentUser()
+        {
+            return _http.HttpContext.User.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
         }
     }
 }

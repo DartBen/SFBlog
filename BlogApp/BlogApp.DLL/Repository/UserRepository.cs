@@ -42,7 +42,9 @@ namespace BlogApp.DLL.Repository
 
         public async Task<User> GetByLogin(string login)
         {
-            return await _db.Users.FirstOrDefaultAsync(x => x.Login == login);
+            return await _db.Users
+                .Include(user => user.Roles)
+                .FirstOrDefaultAsync(x => x.Login == login);
         }
 
         public async Task Update(User item)

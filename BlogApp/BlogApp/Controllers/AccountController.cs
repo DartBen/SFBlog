@@ -74,15 +74,17 @@ namespace BlogApp.Controllers
             UserRequest request = new UserRequest();
 
             request.Role = new RoleReqest(Guid.Empty ,"User");
-
-            if(user.Roles.Where(x => x.Name == "Admin") != null)
+            try
             {
-                request.Role.Name = "Admin";
-            }
-            else if (user.Roles.Where(x => x.Name == "Moderator") != null)
-            {
-                request.Role.Name = "Moderator";
-            }
+                if (user.Roles.Where(x => x.Name == "Admin") != null)
+                {
+                    request.Role.Name = "Admin";
+                }
+                else if (user.Roles.Where(x => x.Name == "Moderator") != null)
+                {
+                    request.Role.Name = "Moderator";
+                }
+            }catch (Exception ex) { }
 
             var result =Authenticate(request, model.Login, model.Password);
 

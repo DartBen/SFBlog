@@ -1,4 +1,6 @@
 ﻿@page
+@using System.Security.Claims;
+
 @model BlogApp.Pages.CreateArticlePageModel
 @{
     Layout = "Shared/_Layout.cshtml";
@@ -13,9 +15,7 @@
             @for (int i = 0; i < Model.CheckTags.Count; i++)
             {
                 <input type="checkbox" asp-for="@Model.CheckTags[i].RememberMe"
-                       value="true" 
-                       
-                       />
+                       value="true" />
                 <input type="hidden" asp-for="@Model.CheckTags[i].tagName"
                        value="@Model.CheckTags[i].tagName" />
                 <label>@Model.CheckTags[i].tagName</label>
@@ -34,7 +34,6 @@
                 </div>
             </div>
         </div>
-
         <div>
             <input type="submit" value="Создать" />
         </div>
