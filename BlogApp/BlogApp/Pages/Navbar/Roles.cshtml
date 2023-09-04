@@ -6,31 +6,11 @@
 }
 <div class="block-reg background-white">
     <h4 class="center">Все Роли</h4>
-
+    <a type="button" asp-area=""
+       asp-controller="Role" asp-action="CreateRole">
+        Создать роль
+    </a>
     <div>
-        @*        <table class="table">
-        <thead>
-        <tr><th>Идентификатор</th><th>Имя роли</th><th>Описание</th></tr>
-        </thead>
-        <tbody>
-        @foreach(var role in Model.Roles)
-        {
-        <tr><td>@role.Id</td><td>@role.Name</td><td>@role.Description</td></tr>
-        }
-        </tbody>
-        </table>*@
-
-        @foreach (var role in Model.Roles)
-        {
-            <form>
-                <div class="RoleBlock">
-                    <label>@role.Name</label>
-                    <label>@role.Description</label>
-                    <label>@role.Id</label>
-                </div>
-            </form>
-        }
-
         @foreach (var role in Model.Roles)
         {
             <div class="card" style="width: 15rem;">

@@ -6,9 +6,13 @@
 }
 <div class="block-reg background-white">
     <h4 class="center">Все тэги</h4>
+    <a type="button" asp-area=""
+       asp-controller="Tag" asp-action="CreateTag">
+        Добавить тэг
+    </a>
     @foreach (var tag in Model.tags)
     {
-        <div class="card" style="width: 15rem;">
+        <div class="card bg-light mb-3" style="width: 15rem;">
             <div class="card-body">
                 <h4 class="card-title">@tag.TagName</h4>
                 <p class="card-text"><h6>Статей по тегу : @tag.Articles.Count</h6></p>

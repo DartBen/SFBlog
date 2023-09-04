@@ -16,6 +16,7 @@ namespace BlogApp.Pages
         private IMapper mapper;
 
         public List<CheckRole> CheckRoles { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Поле Nickname обязательно для заполнения")]
         [DataType(DataType.Text)]

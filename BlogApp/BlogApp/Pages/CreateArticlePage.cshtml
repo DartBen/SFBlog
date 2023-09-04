@@ -21,12 +21,6 @@
                 <label>@Model.CheckTags[i].tagName</label>
             }
 
-@*            @foreach (var checkTag in Model.CheckTags)
-            {
-                <input type="hidden" asp-for="@checkTag.tagName"
-                       value="checkTag" />
-            }*@
-
             <h5>Введите заголовок</h5>
             <div class="mrgn">
                 <input asp-for="Name" class="form-control" />
@@ -42,7 +36,7 @@
         </div>
 
         <div>
-            <input type="submit" value="Войти" />
+            <input type="submit" value="Создать" />
         </div>
     </form>
 </div>

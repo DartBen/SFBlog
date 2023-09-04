@@ -15,11 +15,11 @@ namespace BlogApp.DLL.Models
         public string BodyText { get; set; }
 
         // Автор - привязка к User
-        public Guid Author_Id { get; set; }
-        public User Author { get; set; }
+        public Guid? Author_Id { get; set; }
+        public User? Author { get; set; }
 
         // Привязка тэгов и комментариев
-        public List<Tag> Tags { get; set; } = new List<Tag>();
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<Tag>? Tags { get; set; } = new List<Tag>();
+        public List<Comment>? Comments { get; set; } = new List<Comment>();
     }
 }

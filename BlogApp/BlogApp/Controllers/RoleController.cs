@@ -83,6 +83,11 @@ namespace BlogApp.Controllers
             }
             return NotFound();
         }
+        [Route("CreateRole")]
+        public IActionResult CreateRole()
+        {
+            return RedirectToPage("/CreateRolePage");
+        }
 
         [HttpPost]
         [Route("AddRole")]

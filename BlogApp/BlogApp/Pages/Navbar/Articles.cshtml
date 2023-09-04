@@ -4,3 +4,37 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Статьи";
 }
+<div class="block-reg background-white" class="text-center">
+    <h4 class="center">Все статьи</h4>
+    <a type="button" asp-area=""
+       asp-controller="Article" asp-action="CreateArticle">
+        Добавить статью
+    </a>
+    <div>
+        @foreach (var article in Model.articles)
+        {
+            <div class="card bg-light mb-3" style="width: 15rem;">
+                <div class="card-body">
+                    <h4 class="card-title">@article.Title</h4>
+                    @foreach (var tags in article.Tags)
+                    {
+                        <span class="badge bg-info text-dark">@tags.TagName</span>
+                    }
+                    <div><br /></div>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+                        <a type="button" class="btn btn-info" asp-area=""
+                                asp-controller="Article" asp-action="GetArticleToUpdate" asp-route-Id="@article.Id">
+                            Редактировать
+                        </a>
+                        <a type="button" class="btn btn-warning" asp-area=""
+                           asp-controller="Article" asp-action="ArticleToDelete" asp-route-Id="@article.Id">
+                            Удалить
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>

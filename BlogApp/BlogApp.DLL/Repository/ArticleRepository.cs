@@ -35,12 +35,14 @@ namespace BlogApp.DLL.Repository
 
         public async Task<IEnumerable<Article>> GetAll()
         {
-            return await _db.Articles.ToListAsync();
+            return await _db.Articles
+                .Include(a => a.Tags)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Article>> GetAllByAuthorId(Guid id)
         {
-            return await _db.Articles.Where(x => x.Author_Id==id).ToListAsync();
+            return await _db.Articles.Where(x => x.Author_Id == id).ToListAsync();
         }
 
         public async Task Update(Article item)

@@ -118,7 +118,7 @@ namespace BlogApp.Controllers
 
                 foreach (var c in model.CheckTags)
                 {
-                    var tmp = allTags.FirstOrDefault(x =>x.TagName == c.tagName & c.RememberMe );
+                    var tmp = allTags.FirstOrDefault(x => x.TagName == c.tagName & c.RememberMe);
                     if (tmp != null)
                         requastTags.Add(tmp);
                 }
@@ -149,6 +149,27 @@ namespace BlogApp.Controllers
             }
             else
                 return StatusCode(400, "Уже существует");
+        }
+
+
+        [Route("CreateArticle")]
+        public IActionResult CreateArticle()
+        {
+            return RedirectToPage("/CreateArticlePage");
+        }
+
+        [Route("GetArticleToUpdate/{id?}")]
+        public IActionResult GetArticleToUpdate(ArticleUpdateViewModel model, [FromRoute] Guid ID)
+        {
+            return RedirectToPage("/ArticleUpdatePage", new { id = ID.ToString() });
+        }
+
+        [Route("ArticleToDelete/{id?}")]
+        public IActionResult ArticleToDelete(ArticleUpdateViewModel model, [FromRoute] Guid ID)
+        {
+            var result = Delete(ID);
+
+            return RedirectToPage("/Navbar/Articles");
         }
 
     }

@@ -99,6 +99,12 @@ namespace BlogApp.Controllers
             return NotFound();
         }
 
+        [Route("CreateTag")]
+        public IActionResult CreateTag()
+        {
+            return RedirectToPage("/CreateTagPage");
+        }
+
         [HttpPost]
         [Route("AddTag")]
         public async Task<IActionResult> AddTag(CreateTagViewModel model)

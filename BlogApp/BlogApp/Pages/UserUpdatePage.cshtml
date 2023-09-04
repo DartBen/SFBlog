@@ -1,11 +1,12 @@
-﻿@page
+﻿@page "{id}"
 @model BlogApp.Pages.UserUpdatePageModel
 @{
     Layout = "Shared/_Layout.cshtml";
     ViewData["Title"] = "UserUpdate";
 }
+<h2>Id = @Model.Id</h2>
 <div class="block-reg background-white">
-    <h4 class="center">Добавление статьи</h4>
+    <h4 class="center">Редактирование пользователя</h4>
     <form method="post" asp-controller="User" asp-action="UserUpdate">
         <div asp-validation-summary="ModelOnly"></div>
         <h5 class="center">Выберите роли</h5>

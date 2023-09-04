@@ -125,6 +125,12 @@ namespace BlogAppAPI.Controllers
                 return NotFound();
         }
 
+        [Route("CreateUser")]
+        public IActionResult CreateUser()
+        {
+            return RedirectToPage("/RegistrationPage");
+        }
+
         [HttpPost]
         [Route("UserUpdate")]
         public async Task<IActionResult> UserUpdate(UserUpdateViewModel request)
@@ -158,5 +164,11 @@ namespace BlogAppAPI.Controllers
             return RedirectToPage("/Index");
         }
 
+        [Route("GetUserToUpdate/{id?}")]
+        public IActionResult GetUserToUpdate(RegistrationViewModel model, [FromRoute] Guid ID)
+        {
+            //return RedirectToRoute("TagUpdatePage", new {id=Id});
+            return RedirectToPage("/UserUpdatePage", new { id = ID.ToString() });
+        }
     }
 }
