@@ -16,12 +16,12 @@ namespace BlogApp.DLL.Models
         public string Email { get; set; }
 
         // Статьи потльзователя
-        public List<Article> Articles { get; set; } = new List<Article>();
+        public List<Article>? Articles { get; set; } 
 
         // комментарии пользователя
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<Comment>? Comments { get; set; }
 
         // Привязываю роли многие ко многим
-        public List<Role> Roles { get; set; } = new List<Role>();
+        public List<Role>? Roles { get; set; }
     }
 }

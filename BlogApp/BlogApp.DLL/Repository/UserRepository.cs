@@ -35,7 +35,9 @@ namespace BlogApp.DLL.Repository
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _db.Users.ToListAsync();
+            return await _db.Users
+                .Include(user=> user.Roles)
+                .ToListAsync();
         }
 
         public async Task<User> GetByLogin(string login)

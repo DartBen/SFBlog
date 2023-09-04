@@ -99,5 +99,12 @@ namespace BlogApp.Controllers
 
             return RedirectToPage("/Index");
         }
+
+        //GetRoleToUpdate
+        [Route("GetRoleToUpdate/{id?}")]
+        public IActionResult GetRoleToUpdate(CreateRoleViewModel model, [FromRoute] Guid ID)
+        {
+            return RedirectToPage("/RoleUpdatePage", new { id = ID.ToString() });
+        }
     }
 }
