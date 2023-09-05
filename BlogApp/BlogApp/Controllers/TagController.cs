@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Xml.Linq;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -127,6 +128,23 @@ namespace BlogApp.Controllers
         {
             //return RedirectToRoute("TagUpdatePage", new {id=Id});
             return RedirectToPage("/TagUpdatePage", new { id = ID.ToString()});
+        }
+
+        [Route("TagUpdateById/{id?}")]
+        public async Task<IActionResult> TagUpdateById(CreateTagViewModel model, [FromRoute] Guid ID)
+        {
+            try
+            {
+                var tmpTag = await GetById(ID);
+                var tag = (Tag)(tmpTag as ObjectResult).Value;
+                tag.TagName = model.Name;
+
+                await tags.Update(tag);
+            }
+            catch { }
+
+
+            return RedirectToPage("/Navbar/Tags");
         }
     }
 }

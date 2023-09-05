@@ -6,6 +6,7 @@ using BlogApp.DLL.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 
 namespace BlogApp.Controllers
 {
@@ -14,11 +15,13 @@ namespace BlogApp.Controllers
     {
         private IRoleRepository roles;
         private IMapper mapper;
+        private IAccountController accountController;
 
-        public RoleController(IRoleRepository roleRepository, IMapper mapper)
+        public RoleController(IRoleRepository roleRepository, IMapper mapper, IAccountController accountController)
         {
             roles = roleRepository;
             this.mapper = mapper;
+            this.accountController = accountController;
         }
 
         [HttpGet]
@@ -110,6 +113,24 @@ namespace BlogApp.Controllers
         public IActionResult GetRoleToUpdate(CreateRoleViewModel model, [FromRoute] Guid ID)
         {
             return RedirectToPage("/RoleUpdatePage", new { id = ID.ToString() });
+        }
+
+        [Route("RoleUpdateById/{id?}")]
+        public async Task<IActionResult> RoleUpdateById(CreateRoleViewModel model, [FromRoute] Guid ID)
+        {
+            try
+            {
+                var tmpRole = await GetById(ID);
+                var role = (Role)(tmpRole as ObjectResult).Value;
+                role.Name = model.Name;
+                role.Description = model.Comment;
+
+                await roles.Update(role);
+            }
+            catch { }
+
+
+            return RedirectToPage("/RolesPage");
         }
     }
 }

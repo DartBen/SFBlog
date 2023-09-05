@@ -4,10 +4,10 @@
     Layout = "Shared/_Layout.cshtml";
     ViewData["Title"] = "UserUpdate";
 }
-<h2>Id = @Model.Id</h2>
+@*<h2>Id = @Model.Id</h2>*@
 <div class="block-reg background-white">
     <h4 class="center">Редактирование пользователя</h4>
-    <form method="post" asp-controller="User" asp-action="UserUpdate">
+    <form method="post" asp-controller="User" asp-action="UserUpdateById" asp-route-id="@Model.Id">
         <div asp-validation-summary="ModelOnly"></div>
         <h5 class="center">Выберите роли</h5>
         <div>
@@ -64,7 +64,7 @@
             </div>
 
             <div>
-                <input type="submit" value="Войти" />
+                <input style="margin:5px" type="submit" value="Войти" />
             </div>
         </div>
     </form>

@@ -30,7 +30,10 @@ namespace BlogApp.DLL.Repository
 
         public async Task<Article> Get(Guid id)
         {
-            return await _db.Articles.FindAsync(id);
+            return await _db.Articles
+                .Include(x => x.Comments)
+                .Include(x=> x.Tags)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Article>> GetAll()

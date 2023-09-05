@@ -11,22 +11,25 @@ using System.Security.Claims;
 using BlogAppAPI.Controllers;
 using NuGet.Protocol.Plugins;
 using System.Xml.Linq;
+using static System.Net.WebRequestMethods;
 
 namespace BlogApp.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : Controller, IAccountController
     {
         private IUserRepository users;
         private IRoleRepository roles;
         private IMapper mapper;
         private UserController userController;
+        private readonly IHttpContextAccessor _http;
 
-        public AccountController(IUserRepository userRepository, IRoleRepository role, IMapper mapper, UserController userController)
+        public AccountController(IUserRepository userRepository, IRoleRepository role, IMapper mapper, UserController userController, IHttpContextAccessor http)
         {
             users = userRepository;
             roles = role;
             this.mapper = mapper;
             this.userController = userController;
+            _http = http;
         }
 
         public IActionResult Index()
@@ -68,12 +71,12 @@ namespace BlogApp.Controllers
         {
             var user = await users.GetByLogin(model.Login);
 
-                if (user == null)
+            if (user == null)
                 return RedirectToPage("/LoginPage");
 
             UserRequest request = new UserRequest();
 
-            request.Role = new RoleReqest(Guid.Empty ,"User");
+            request.Role = new RoleReqest(Guid.Empty, "User");
             try
             {
                 if (user.Roles.Where(x => x.Name == "Admin") != null)
@@ -84,9 +87,10 @@ namespace BlogApp.Controllers
                 {
                     request.Role.Name = "Moderator";
                 }
-            }catch (Exception ex) { }
+            }
+            catch (Exception ex) { }
 
-            var result =Authenticate(request, model.Login, model.Password);
+            var result = Authenticate(request, model.Login, model.Password);
 
             return RedirectToPage("/Index");
         }
@@ -104,7 +108,7 @@ namespace BlogApp.Controllers
             request.Role = new RoleReqest(Guid.Empty, "User");
             request.FirstName = model.FirstName;
             request.LastName = model.LastName;
-            request.Email = model.Email;    
+            request.Email = model.Email;
             request.Password = model.Password;
             request.Login = model.Login;
 
@@ -117,9 +121,16 @@ namespace BlogApp.Controllers
             }
 
 
-                return RedirectToPage("/Index");
+            return RedirectToPage("/Index");
         }
 
-
+        [HttpGet]
+        [Route("GetCurrentUser")]
+        public async Task<User> GetCurrentUser()
+        {
+            var userLogin = _http.HttpContext.User.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            var user = ((await userController.GetByLogin(userLogin)) as ObjectResult);
+            return (User)user.Value;
+        }
     }
 }

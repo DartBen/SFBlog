@@ -20,13 +20,16 @@ namespace BlogApp.Controllers
         private IArticleRepository articles;
         private ITagRepository tags;
         private IUserRepository _users;
+        private IAccountController accountController;
         private IMapper mapper;
 
-        public ArticleController(IArticleRepository articleRepository, ITagRepository tagRepository, IUserRepository userRepository, IMapper mapper)
+        public ArticleController(IArticleRepository articleRepository, ITagRepository tagRepository, IUserRepository userRepository, 
+            IAccountController accountController, IMapper mapper)
         {
             articles = articleRepository;
             tags = tagRepository;
             _users = userRepository;
+            this.accountController = accountController;
             this.mapper = mapper;
         }
 
@@ -137,17 +140,12 @@ namespace BlogApp.Controllers
                     {
                         user = await _users.GetByLogin(Login);
                     }
-
-
                 }
-
 
                 Console.WriteLine("AddArticle");
                 List<Tag> requastTags = new List<Tag>();
 
                 var allTags = await tags.GetAll();
-
-
 
                 foreach (var c in model.CheckTags)
                 {
@@ -164,8 +162,6 @@ namespace BlogApp.Controllers
                 article.Author = user;
 
                 CreateArticle(article);
-
-
             }
             catch { }
 
@@ -186,8 +182,8 @@ namespace BlogApp.Controllers
         }
 
 
-        [Route("CreateArticle")]
-        public IActionResult CreateArticle()
+        [Route("CreateArticleRedirect")]
+        public IActionResult CreateArticleRedirect()
         {
             return RedirectToPage("/CreateArticlePage");
         }
@@ -204,6 +200,51 @@ namespace BlogApp.Controllers
             var result = Delete(ID);
 
             return RedirectToPage("/Navbar/Articles");
+        }
+
+        [Route("ArticleOpen/{id?}")]
+        public IActionResult ArticleOpen([FromRoute] Guid ID)
+        {
+            return RedirectToPage("/ArticlePage", new { id = ID.ToString() });
+        }
+
+
+        [Route("ArticleUpdateById/{id?}")]
+        public async Task<IActionResult> ArticleUpdateById(CreateArticleViewModel model,[FromRoute] Guid ID)
+        {
+            try
+            {
+                IEnumerable<Claim> claims;
+                string Login = string.Empty;
+
+                var user = await accountController.GetCurrentUser();
+
+                Console.WriteLine("AddArticle");
+                List<Tag> requestTags = new List<Tag>();
+
+                var allTags = await tags.GetAll();
+
+                foreach (var c in model.CheckTags)
+                {
+                    var tmp = allTags.FirstOrDefault(x => x.TagName == c.tagName & c.RememberMe);
+                    if (tmp != null)
+                        requestTags.Add(tmp);
+                }
+
+                var tmpArticle = await GetById(ID);
+                var article = (Article)(tmpArticle as ObjectResult).Value;
+                article.Tags = requestTags;
+                article.BodyText = model.ArticleBody;
+                article.CreateTime = DateTime.Now;
+                article.Title = model.Name;
+                article.Author = user;
+
+                await articles.Update(article);
+                }
+            catch { }
+
+
+            return RedirectToPage("/ArticlePage", new { id = ID.ToString() });
         }
 
     }

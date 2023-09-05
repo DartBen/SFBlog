@@ -46,6 +46,7 @@ namespace BlogApp
             builder.Services.AddTransient<ArticleController, ArticleController>();
             builder.Services.AddTransient<CommentController, CommentController>();
             builder.Services.AddTransient<RoleController, RoleController>();
+            builder.Services.AddTransient<IAccountController, AccountController>();
 
             // аутентификация
             builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
@@ -60,6 +61,7 @@ namespace BlogApp
                                     }
                                 };
                             });
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -30,12 +30,18 @@ namespace BlogApp.DLL.Repository
 
         public async Task<Comment> Get(Guid id)
         {
-            return await _db.Comments.FindAsync(id);
+            return await _db.Comments
+                                .Include(x => x.Author)
+                                .Include(x => x.Article)
+                                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Comment>> GetAll()
         {
-            return await _db.Comments.ToListAsync();
+            return await _db.Comments
+                                .Include(x => x.Author)
+                                .Include(x => x.Article)
+                                .ToListAsync();
         }
 
         public async Task Update(Comment item)

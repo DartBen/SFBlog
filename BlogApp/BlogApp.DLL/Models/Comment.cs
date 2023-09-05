@@ -13,11 +13,11 @@ namespace BlogApp.DLL.Models
         public string BodyText { get; set; }
 
         // Автор
-        public Guid Author_Id { get; set; }
+        public Guid? Author_Id { get; set; }
         public User Author { get; set; }
 
         // Статья
-        public Guid Article_Id { get; set; }
+        public Guid? Article_Id { get; set; }
         public Article Article { get; set; }
     }
 }

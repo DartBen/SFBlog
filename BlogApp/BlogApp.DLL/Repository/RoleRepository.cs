@@ -38,12 +38,14 @@ namespace BlogApp.DLL.Repository
 
         public async Task<Role> Get(Guid id)
         {
-            return await _db.Roles.FindAsync(id);
+            return await _db.Roles
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Role>> GetAll()
         {
-            return await _db.Roles.ToListAsync();
+            return await _db.Roles
+                .ToListAsync();
         }
 
         public async Task<Role> GetByName(string name)
@@ -57,6 +59,8 @@ namespace BlogApp.DLL.Repository
 
             if (!string.IsNullOrEmpty(item.Name))
                 oldItem.Result.Name = item.Name;
+            if (item.Description != null)
+                oldItem.Result.Description = item.Description;
 
             var entry = _db.Entry(oldItem.Result);
 

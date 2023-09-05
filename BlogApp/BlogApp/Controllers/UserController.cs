@@ -24,10 +24,11 @@ namespace BlogAppAPI.Controllers
         private IMapper mapper;
         private readonly IHttpContextAccessor _http;
 
-        public UserController(IUserRepository userRepository,IRoleRepository role, IMapper mapper)
+        public UserController(IUserRepository userRepository,IRoleRepository role, IMapper mapper, IHttpContextAccessor http)
         {
             users = userRepository;
             roles = role;
+            _http = http;
             this.mapper = mapper;
         }
 
@@ -168,7 +169,6 @@ namespace BlogAppAPI.Controllers
         [Route("GetUserToUpdate/{id?}")]
         public IActionResult GetUserToUpdate(RegistrationViewModel model, [FromRoute] Guid ID)
         {
-            //return RedirectToRoute("TagUpdatePage", new {id=Id});
             return RedirectToPage("/UserUpdatePage", new { id = ID.ToString() });
         }
 
@@ -177,6 +177,39 @@ namespace BlogAppAPI.Controllers
         public string GetCurrentUser()
         {
             return _http.HttpContext.User.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+        }
+
+        [HttpPost]
+        [Route("UserUpdateById/{id?}")]
+        public async Task<IActionResult> UserUpdateById(UserUpdateViewModel request, [FromRoute] Guid ID)
+        {
+            try
+            {
+                List<Role> requastRoles = new List<Role>();
+
+                var allRoles = await roles.GetAll();
+
+                foreach (var c in request.CheckRoles)
+                {
+                    var tmp = allRoles.FirstOrDefault(x => x.Name == c.roleName & c.RememberMe);
+                    if (tmp != null)
+                        requastRoles.Add(tmp);
+                }
+
+                var user = await users.Get(ID);
+
+                user.Login = request.Login;
+                user.Roles = requastRoles;
+                user.Email = request.Email;
+                user.Password = request.Password;
+                user.FirstName = request.FirstName;
+                user.LastName = request.LastName;
+
+                users.Update(user);
+            }
+            catch { Console.WriteLine("UserUpdate : Error"); }
+
+            return RedirectToPage("/Index");
         }
     }
 }

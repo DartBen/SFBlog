@@ -2,6 +2,9 @@
 using BlogApp.BLL.RequestModels;
 using BlogApp.DLL.Models;
 using BlogApp.DLL.Repository.Interfaces;
+using BlogApp.Views;
+using BlogAppAPI.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,11 +15,18 @@ namespace BlogApp.Controllers
     public class CommentController : Controller
     {
         private ICommentRepository comments;
+        private IAccountController accountController;
+        private UserController userController;
+        private IArticleRepository articles;
         private IMapper mapper;
 
-        public CommentController(ICommentRepository commentRepository, IMapper mapper)
+        public CommentController(ICommentRepository commentRepository,IAccountController _accountController, UserController userController,
+            IArticleRepository articleRepository,IMapper mapper)
         {
             comments = commentRepository;
+            accountController= _accountController;
+            this.userController= userController;
+            this.articles= articleRepository;
             this.mapper = mapper;
         }
 
@@ -46,11 +56,21 @@ namespace BlogApp.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public async Task<IActionResult> Create(CommentRequest request)
+        public async Task<IActionResult> Create(CommentRequest request, Guid articleId)
         {
             if (request.Id.ToString() == "" || await comments.Get(request.Id) == null)
             {
                 var newComment = mapper.Map<CommentRequest, Comment>(request);
+                var user = accountController.GetCurrentUser();
+                var article = articles.Get(articleId);
+
+
+                newComment.Id=Guid.NewGuid();
+                newComment.BodyText=request.BodyText;
+                newComment.Author = user.Result;
+                newComment.Article=await article;
+                newComment.Author_Id=user.Result.Id;
+                newComment.Article_Id=articleId;
                 await comments.Create(newComment);
                 return StatusCode(200);
             }
@@ -83,6 +103,18 @@ namespace BlogApp.Controllers
                 return StatusCode(200);
             }
             return NotFound();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("CreateComment/{id?}")]
+        public async Task<IActionResult> CreateComment(CommentRequest model, [FromRoute] Guid ID)
+        {
+            model.Id=Guid.NewGuid();
+
+            await Create(model,  ID);
+
+            return RedirectToPage("/ArticlePage", new { id = ID.ToString() });
         }
     }
 }
