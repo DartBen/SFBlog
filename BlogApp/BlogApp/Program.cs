@@ -83,6 +83,7 @@ namespace BlogApp
             }
             if (app.Environment.IsDevelopment())
             {
+                app.UseStatusCodePagesWithReExecute("/Errors/ErrorsRedirect","?statusCode={0}");
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
@@ -97,6 +98,10 @@ namespace BlogApp
 
             app.MapControllers();
             app.MapRazorPages();
+
+
+
+
 
             app.Run();
         }
