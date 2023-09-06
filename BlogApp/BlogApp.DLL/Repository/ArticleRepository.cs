@@ -33,6 +33,7 @@ namespace BlogApp.DLL.Repository
             return await _db.Articles
                 .Include(x => x.Comments)
                 .Include(x=> x.Tags)
+                .Include(x => x.Author)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -40,6 +41,8 @@ namespace BlogApp.DLL.Repository
         {
             return await _db.Articles
                 .Include(a => a.Tags)
+                .Include(x => x.Comments)
+                .Include(x=> x.Author)
                 .ToListAsync();
         }
 

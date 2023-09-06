@@ -20,12 +20,16 @@
                     <h4 class="card-title">@user.Login</h4>
                     <h5 class="card-title">@user.FirstName @user.LastName</h5>
 
-                        @foreach (var role in user.Roles)
-                        {
-                            <span class="badge bg-info text-dark">@role.Name</span>
-                        }
-                        <h5>@user.Email</h5>
-                     <a type="button" class="btn btn-primary" asp-area="" asp-controller="User" asp-action="GetUserToUpdate" asp-route-Id="@user.Id">Редактировать</a> 
+                    @foreach (var role in user.Roles)
+                    {
+                        <span class="badge bg-info text-dark">@role.Name</span>
+                    }
+                    <h5>@user.Email</h5>
+                    @if ((User.Identity.IsAuthenticated & User.Identity.Name == user.Login) || User.IsInRole("Admin"))
+                    {
+                        <a type="button" class="btn btn-primary" asp-area="" asp-controller="User"
+                           asp-action="GetUserToUpdate" asp-route-Id="@user.Id">Редактировать</a>
+                    }
                 </div>
             </div>
         }

@@ -16,7 +16,10 @@
             <div class="card-body">
                 <h4 class="card-title">@tag.TagName</h4>
                 <p class="card-text"><h6>Статей по тегу : @tag.Articles.Count</h6></p>
-                <a type="button" class="btn btn-primary" asp-area="" asp-controller="Tag" asp-action="GetTagToUpdate" asp-route-Id="@tag.Id">Редактировать</a>
+                @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    <a type="button" class="btn btn-primary" asp-area="" asp-controller="Tag" asp-action="GetTagToUpdate" asp-route-Id="@tag.Id">Редактировать</a>
+                }
             </div>
         </div>
     }

@@ -76,7 +76,8 @@ namespace BlogApp
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Error");
+                app.UseStatusCodePagesWithReExecute("/Errors/ErrorsRedirect", "?statusCode={0}");
+                app.UseExceptionHandler("/Errors/SomethingWrongPage");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
 
@@ -84,9 +85,11 @@ namespace BlogApp
             if (app.Environment.IsDevelopment())
             {
                 app.UseStatusCodePagesWithReExecute("/Errors/ErrorsRedirect","?statusCode={0}");
+                app.UseExceptionHandler("/Errors/SomethingWrongPage");
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -26,14 +26,19 @@
                            asp-controller="Article" asp-action="ArticleOpen" asp-route-Id="@article.Id">
                             Просмотреть
                         </a>
-                        <a type="button" class="btn btn-info" asp-area=""
-                                asp-controller="Article" asp-action="GetArticleToUpdate" asp-route-Id="@article.Id">
-                            Редактировать
-                        </a>
-                        <a type="button" class="btn btn-warning" asp-area=""
-                           asp-controller="Article" asp-action="ArticleToDelete" asp-route-Id="@article.Id">
-                            Удалить
-                        </a>
+                        @if ((User.Identity.IsAuthenticated && @article.Author!=null && User.Identity.Name == @article.Author.Login) || 
+                        User.IsInRole("Admin")|| User.IsInRole("Moderator"))
+                        {
+                            <a type="button" class="btn btn-info" asp-area=""
+                               asp-controller="Article" asp-action="GetArticleToUpdate" asp-route-Id="@article.Id">
+                                Редактировать
+                            </a>
+
+                            <a type="button" class="btn btn-warning" asp-area=""
+                               asp-controller="Article" asp-action="ArticleToDelete" asp-route-Id="@article.Id">
+                                Удалить
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
