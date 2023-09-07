@@ -23,8 +23,8 @@ namespace BlogApp.Controllers
         [Route("MakeError")]
         public IActionResult MakeError()
         {
-            int a = 0;
-            var temp = 42 / a;
+            //int a = 0;
+            //var temp = 42 / a;
 
             return StatusCode(402);
         }
