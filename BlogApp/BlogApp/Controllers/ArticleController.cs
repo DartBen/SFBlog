@@ -7,6 +7,7 @@ using BlogApp.Views;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using NLog;
 using System.Data;
 using System.Security.Claims;
 
@@ -22,6 +23,7 @@ namespace BlogApp.Controllers
         private IUserRepository _users;
         private IAccountController accountController;
         private IMapper mapper;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public ArticleController(IArticleRepository articleRepository, ITagRepository tagRepository, IUserRepository userRepository, 
             IAccountController accountController, IMapper mapper)
@@ -115,6 +117,7 @@ namespace BlogApp.Controllers
         [Route("AddArticle")]
         public async Task<IActionResult> AddArticle(CreateArticleViewModel model)
         {
+            _logger.Info("ArticleController : AddArticle");
             try
             {
                 User user = null;
@@ -172,6 +175,7 @@ namespace BlogApp.Controllers
         [Route("CreateArticle")]
         public async Task<IActionResult> CreateArticle(Article article)
         {
+            _logger.Info("ArticleController : CreateArticle");
             if (article.Id.ToString() == "" || await articles.Get(article.Id) == null)
             {
                 await articles.Create(article);
@@ -197,6 +201,7 @@ namespace BlogApp.Controllers
         [Route("ArticleToDelete/{id?}")]
         public IActionResult ArticleToDelete(ArticleUpdateViewModel model, [FromRoute] Guid ID)
         {
+            _logger.Info("ArticleController : ArticleToDelete");
             var result = Delete(ID);
 
             return RedirectToPage("/Navbar/Articles");
@@ -212,6 +217,7 @@ namespace BlogApp.Controllers
         [Route("ArticleUpdateById/{id?}")]
         public async Task<IActionResult> ArticleUpdateById(CreateArticleViewModel model,[FromRoute] Guid ID)
         {
+            _logger.Info("ArticleController : ArticleUpdateById");
             try
             {
                 IEnumerable<Claim> claims;

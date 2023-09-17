@@ -12,6 +12,7 @@ using BlogAppAPI.Controllers;
 using NuGet.Protocol.Plugins;
 using System.Xml.Linq;
 using static System.Net.WebRequestMethods;
+using NLog;
 
 namespace BlogApp.Controllers
 {
@@ -22,6 +23,7 @@ namespace BlogApp.Controllers
         private IMapper mapper;
         private UserController userController;
         private readonly IHttpContextAccessor _http;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public AccountController(IUserRepository userRepository, IRoleRepository role, IMapper mapper, UserController userController, IHttpContextAccessor http)
         {
@@ -41,6 +43,7 @@ namespace BlogApp.Controllers
         [Route("Authenticate")]
         public async Task<User> Authenticate(UserRequest request, string login, string password)
         {
+            _logger.Info("AccountController : Authenticate");
             var user = users.GetByLogin(login).Result;
             if (user.Login != login)
                 throw new AuthenticationException("Неверный логин");
@@ -69,6 +72,7 @@ namespace BlogApp.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            _logger.Info("AccountController : Login");
             var user = await users.GetByLogin(model.Login);
 
             if (user == null)
@@ -99,6 +103,7 @@ namespace BlogApp.Controllers
         [Route("Registration")]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
+            _logger.Info("AccountController : Registration");
             var user = await users.GetByLogin(model.Login);
 
             if (user != null)
@@ -128,6 +133,7 @@ namespace BlogApp.Controllers
         [Route("GetCurrentUser")]
         public async Task<User> GetCurrentUser()
         {
+            _logger.Info("AccountController : GetCurrentUser");
             var userLogin = _http.HttpContext.User.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             var user = ((await userController.GetByLogin(userLogin)) as ObjectResult);
             return (User)user.Value;

@@ -8,6 +8,8 @@ using FluentValidation;
 using Microsoft.OpenApi.Models;
 using BlogAppAPI.Controllers;
 using BlogApp.Controllers;
+using NLog.Web;
+using NLog.Extensions.Logging;
 
 namespace BlogApp
 {
@@ -63,6 +65,14 @@ namespace BlogApp
                             });
             builder.Services.AddHttpContextAccessor();
 
+            // nLog
+            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            builder.Services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddNLog();
+            });
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -84,7 +94,7 @@ namespace BlogApp
             }
             if (app.Environment.IsDevelopment())
             {
-                app.UseStatusCodePagesWithReExecute("/Errors/ErrorsRedirect","?statusCode={0}");
+                app.UseStatusCodePagesWithReExecute("/Errors/ErrorsRedirect", "?statusCode={0}");
                 app.UseExceptionHandler("/Errors/SomethingWrongPage");
                 app.UseSwagger();
                 app.UseSwaggerUI();
@@ -102,11 +112,8 @@ namespace BlogApp
             app.MapControllers();
             app.MapRazorPages();
 
-
-
-
-
             app.Run();
+
         }
     }
 }

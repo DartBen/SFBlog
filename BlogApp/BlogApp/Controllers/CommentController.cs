@@ -6,6 +6,7 @@ using BlogApp.Views;
 using BlogAppAPI.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,6 +20,7 @@ namespace BlogApp.Controllers
         private UserController userController;
         private IArticleRepository articles;
         private IMapper mapper;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public CommentController(ICommentRepository commentRepository,IAccountController _accountController, UserController userController,
             IArticleRepository articleRepository,IMapper mapper)
@@ -58,6 +60,7 @@ namespace BlogApp.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create(CommentRequest request, Guid articleId)
         {
+            _logger.Info("CommentController : Create");
             if (request.Id.ToString() == "" || await comments.Get(request.Id) == null)
             {
                 var newComment = mapper.Map<CommentRequest, Comment>(request);
@@ -82,6 +85,7 @@ namespace BlogApp.Controllers
         [Route("Update")]
         public async Task<IActionResult> Update(CommentRequest request)
         {
+            _logger.Info("CommentController : Update");
             if (await comments.Get(request.Id) != null)
             {
                 var newComment = mapper.Map<CommentRequest, Comment>(request);
@@ -96,6 +100,7 @@ namespace BlogApp.Controllers
         [Route("Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            _logger.Info("CommentController : Delete");
             var user = await comments.Get(id);
             if (user != null)
             {
@@ -110,6 +115,7 @@ namespace BlogApp.Controllers
         [Route("CreateComment/{id?}")]
         public async Task<IActionResult> CreateComment(CommentRequest model, [FromRoute] Guid ID)
         {
+            _logger.Info("CommentController : CreateComment");
             model.Id=Guid.NewGuid();
 
             await Create(model,  ID);

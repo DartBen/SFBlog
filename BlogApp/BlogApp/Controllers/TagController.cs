@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Xml.Linq;
 using System.Data;
+using NLog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +19,7 @@ namespace BlogApp.Controllers
     {
         private ITagRepository tags;
         private IMapper mapper;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public TagController(ITagRepository tagRepository, IMapper mapper)
         {
@@ -51,6 +53,7 @@ namespace BlogApp.Controllers
         [Route("GetAllByName")]
         public async Task<IActionResult> GetAllByName(string name)
         {
+            _logger.Info("TagController : Update");
             var allTags = await tags.GetAll();
             var temp = allTags.Where(x => x.TagName == name).FirstOrDefault();
             if (temp != null)
@@ -63,6 +66,7 @@ namespace BlogApp.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create(TagRequest request)
         {
+            _logger.Info("TagController : Update");
             if (request.Id.ToString() == "" || await tags.Get(request.Id) == null)
             {
                 var newtag = mapper.Map<TagRequest, Tag>(request);
@@ -77,6 +81,7 @@ namespace BlogApp.Controllers
         [Route("Update")]
         public async Task<IActionResult> Update(TagRequest request)
         {
+            _logger.Info("TagController : Update");
             if (await tags.Get(request.Id) != null)
             {
                 var newtag = mapper.Map<TagRequest, Tag>(request);
@@ -91,6 +96,7 @@ namespace BlogApp.Controllers
         [Route("Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            _logger.Info("TagController : Delete");
             var tag = await tags.Get(id);
             if (tag != null)
             {
@@ -110,6 +116,7 @@ namespace BlogApp.Controllers
         [Route("AddTag")]
         public async Task<IActionResult> AddTag(CreateTagViewModel model)
         {
+            _logger.Info("TagController : AddTag");
             var allTags = await tags.GetAll();
             var temp = allTags.Where(x => x.TagName == model.Name).FirstOrDefault();
             if (temp != null) return StatusCode(400);
@@ -133,6 +140,7 @@ namespace BlogApp.Controllers
         [Route("TagUpdateById/{id?}")]
         public async Task<IActionResult> TagUpdateById(CreateTagViewModel model, [FromRoute] Guid ID)
         {
+            _logger.Info("TagController : TagUpdateById");
             try
             {
                 var tmpTag = await GetById(ID);

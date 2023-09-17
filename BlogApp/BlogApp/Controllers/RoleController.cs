@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Security.Claims;
+using NLog;
 
 namespace BlogApp.Controllers
 {
@@ -16,6 +17,7 @@ namespace BlogApp.Controllers
         private IRoleRepository roles;
         private IMapper mapper;
         private IAccountController accountController;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public RoleController(IRoleRepository roleRepository, IMapper mapper, IAccountController accountController)
         {
@@ -50,6 +52,7 @@ namespace BlogApp.Controllers
         [Route("Create")]
         public async Task<IActionResult> Create(RoleReqest request)
         {
+            _logger.Info("RoleController : Create");
             if (request.Id.ToString() == "" || await roles.Get(request.Id) == null)
             {
                 var role = mapper.Map<RoleReqest, Role>(request);
@@ -64,6 +67,7 @@ namespace BlogApp.Controllers
         [Route("Update")]
         public async Task<IActionResult> Update(RoleReqest request)
         {
+            _logger.Info("RoleController : Update");
             if (await roles.Get(request.Id) != null)
             {
                 var role = mapper.Map<RoleReqest, Role>(request);
@@ -78,6 +82,7 @@ namespace BlogApp.Controllers
         [Route("Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            _logger.Info("RoleController : Delete");
             var role = await roles.Get(id);
             if (role != null)
             {
@@ -96,6 +101,7 @@ namespace BlogApp.Controllers
         [Route("AddRole")]
         public async Task<IActionResult> AddRole(CreateRoleViewModel model)
         {
+            _logger.Info("RoleController : AddRole");
             var allroles = await roles.GetAll();
             var temp = allroles.Where(x => x.Name == model.Name).FirstOrDefault();
             if (temp != null) return StatusCode(400);
@@ -118,6 +124,7 @@ namespace BlogApp.Controllers
         [Route("RoleUpdateById/{id?}")]
         public async Task<IActionResult> RoleUpdateById(CreateRoleViewModel model, [FromRoute] Guid ID)
         {
+            _logger.Info("RoleController : RoleUpdateById");
             try
             {
                 var tmpRole = await GetById(ID);

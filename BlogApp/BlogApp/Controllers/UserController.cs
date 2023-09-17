@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using BlogApp.Views;
 using System.Reflection.Metadata.Ecma335;
+using NLog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,6 +24,7 @@ namespace BlogAppAPI.Controllers
         private IRoleRepository roles;
         private IMapper mapper;
         private readonly IHttpContextAccessor _http;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public UserController(IUserRepository userRepository,IRoleRepository role, IMapper mapper, IHttpContextAccessor http)
         {
@@ -102,6 +104,7 @@ namespace BlogAppAPI.Controllers
         [Route("Delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            _logger.Info("UserController : UserUpdate");
             var user = await users.Get(id);
             if (user != null)
             {
@@ -115,6 +118,7 @@ namespace BlogAppAPI.Controllers
         [Route("UpdateRole")]
         public async Task<IActionResult> UpdateRole(RoleReqest reqest, Guid userId)
         {
+            _logger.Info("UserController : UserUpdate");
             var role = await roles.GetByName(reqest.Name);
             var user = await users.Get(userId);
             if (user != null && role != null)
@@ -137,6 +141,7 @@ namespace BlogAppAPI.Controllers
         [Route("UserUpdate")]
         public async Task<IActionResult> UserUpdate(UserUpdateViewModel request)
         {
+            _logger.Info("UserController : UserUpdate");
             try
             {
                 Console.WriteLine("UserUpdate");
@@ -183,6 +188,7 @@ namespace BlogAppAPI.Controllers
         [Route("UserUpdateById/{id?}")]
         public async Task<IActionResult> UserUpdateById(UserUpdateViewModel request, [FromRoute] Guid ID)
         {
+            _logger.Info("UserController : UserUpdateById");
             try
             {
                 List<Role> requastRoles = new List<Role>();
